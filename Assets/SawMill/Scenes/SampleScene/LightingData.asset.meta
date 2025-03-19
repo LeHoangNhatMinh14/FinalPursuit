@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1f9a6d77b54360740b979da40e37d485
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 175703
+  packageName: Industrial Sawmill Modular Pack
+  packageVersion: 1.0
+  assetPath: Assets/SawMill/Scenes/SampleScene/LightingData.asset
+  uploadId: 381733
