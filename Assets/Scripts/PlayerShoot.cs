@@ -5,7 +5,7 @@ public class PlayerShoot : MonoBehaviour
     public Camera cam;
     public float damageBody = 34f;
     public float damageHead = 100f;
-    public LayerMask enemyLayer; // Ensure this is set in Inspector
+    public LayerMask enemyLayer; // Assign "Enemy" layer in Inspector
 
     void Update()
     {
@@ -18,27 +18,34 @@ public class PlayerShoot : MonoBehaviour
     void Shoot()
     {
         RaycastHit hit;
-        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, 100f, enemyLayer))
+        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity, enemyLayer))
         {
-            Enemy enemy = hit.collider.GetComponentInParent<Enemy>(); // Ensures it finds the main enemy script
-            if (enemy != null)
+            // Check if we hit a head or body collider (tag-based)
+            if (hit.collider.CompareTag("Head") || hit.collider.CompareTag("Body"))
             {
-                if (hit.collider.CompareTag("Head"))
+                Enemy enemy = hit.collider.GetComponentInParent<Enemy>();
+                if (enemy != null)
                 {
-                    enemy.TakeDamage(damageHead);
-                    Debug.Log("Headshot! Enemy took " + damageHead + " damage.");
+                    if (hit.collider.CompareTag("Head"))
+                    {
+                        enemy.TakeDamage(damageHead, "head");
+                        Debug.Log("HEADSHOT! Damage: " + damageHead);
+                    }
+                    else if (hit.collider.CompareTag("Body"))
+                    {
+                        enemy.TakeDamage(damageBody, "body");
+                        Debug.Log("Bodyshot! Damage: " + damageBody);
+                    }
                 }
-                else
-                {
-                    enemy.TakeDamage(damageBody);
-                    Debug.Log("Body shot! Enemy took " + damageBody + " damage.");
-                }
+            }
+            else
+            {
+                Debug.Log("Hit a limb - no damage!");
             }
         }
         else
         {
             Debug.Log("Missed!");
-            Debug.Log("Raycast hit: " + hit.collider.name + " | Layer: " + hit.collider.gameObject.layer);
         }
     }
 }
