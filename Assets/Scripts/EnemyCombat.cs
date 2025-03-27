@@ -35,7 +35,7 @@ public class EnemyCombat : MonoBehaviour
     bool ReadyToAttack()
     {
         bool ready = Time.time > lastAttackTime + attackCooldown;
-        if (!ready) Debug.Log($"[Enemy] Attack on cooldown. Ready in {lastAttackTime + attackCooldown - Time.time:F1}s");
+        // if (!ready) Debug.Log($"[Enemy] Attack on cooldown. Ready in {lastAttackTime + attackCooldown - Time.time:F1}s");
         return ready;
     }
 
@@ -55,7 +55,7 @@ public class EnemyCombat : MonoBehaviour
             playerLayer))
         {
             bool isPlayer = hit.collider.CompareTag("Player");
-            Debug.Log($"[Enemy] LOS: {(isPlayer ? "CLEAR" : $"BLOCKED by {hit.collider.name}")}");
+            // Debug.Log($"[Enemy] LOS: {(isPlayer ? "CLEAR" : $"BLOCKED by {hit.collider.name}")}");
             return isPlayer;
         }
         
@@ -67,11 +67,10 @@ public class EnemyCombat : MonoBehaviour
     {
         Debug.Log("[Enemy] INITIATING ATTACK");
         
-        PlayAttackEffects();
         AttemptDamage();
         
         lastAttackTime = Time.time;
-        Debug.Log($"[Enemy] Next attack available at {lastAttackTime + attackCooldown:F1}");
+        // Debug.Log($"[Enemy] Next attack available at {lastAttackTime + attackCooldown:F1}");
     }
 
     void PlayAttackEffects()
