@@ -23,6 +23,12 @@ public class Enemy : MonoBehaviour
         
         InitializeHealthBar();
         Debug.Log($"Enemy spawned with {currentHealth}/{maxHealth} HP");
+
+        if (EnemyCounter.Instance != null)
+        {
+            EnemyCounter.Instance.AddEnemy(gameObject);
+            Debug.Log($"Enemy registered: {gameObject.name}");
+        }
     }
 
     void InitializeHealthBar()
@@ -69,7 +75,16 @@ public class Enemy : MonoBehaviour
         // // Death effects
         // if (deathEffect != null)
         //     Instantiate(deathEffect, transform.position, Quaternion.identity);
-            
         Destroy(gameObject);
+    }
+
+    void OnDestroy()
+    {
+        // Only unregister if the game isn't quitting
+        if (EnemyCounter.Instance != null && !GameManager.isApplicationQuitting)
+        {
+            EnemyCounter.Instance.RemoveEnemy(gameObject);
+            Debug.Log($"Enemy unregistered: {gameObject.name}");
+        }
     }
 }
