@@ -44,22 +44,32 @@ public class EnemyCombat : MonoBehaviour
         float distance = Vector3.Distance(transform.position, player.position);
         if (distance > attackRange)
         {
-            // Debug.Log($"[Enemy] Player too far: {distance:F1}m/{attackRange}m");
+            Debug.Log($"[Enemy] Player too far: {distance:F1}m/{attackRange}m");
             return false;
         }
 
-        if (Physics.Raycast(transform.position, 
-            (player.position - transform.position).normalized, 
-            out RaycastHit hit,
-            attackRange,
-            playerLayer))
+        Vector3 directionToPlayer = (player.position - transform.position).normalized;
+        
+        // Visualize the LOS check in Scene view (only visible in Editor)
+        Debug.DrawRay(transform.position, directionToPlayer * attackRange, Color.red, 0.1f);
+
+        // Check for any obstructions (use default layer mask or include environment layers)
+        if (Physics.Raycast(transform.position, directionToPlayer, out RaycastHit hit, attackRange))
         {
-            bool isPlayer = hit.collider.CompareTag("Player");
-            // Debug.Log($"[Enemy] LOS: {(isPlayer ? "CLEAR" : $"BLOCKED by {hit.collider.name}")}");
-            return isPlayer;
+            // Check if the hit object is the player
+            if (hit.collider.CompareTag("Player"))
+            {
+                Debug.Log("[Enemy] LOS: CLEAR - Player visible");
+                return true;
+            }
+            else
+            {
+                Debug.Log($"[Enemy] LOS: BLOCKED by {hit.collider.name}");
+                return false;
+            }
         }
         
-        Debug.Log("[Enemy] LOS: No obstructions but player not hit");
+        Debug.Log("[Enemy] LOS: No obstructions but player not hit (edge case)");
         return false;
     }
 

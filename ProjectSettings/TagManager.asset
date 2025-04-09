@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - CinemachineTarget
   - Spawnpoint
+  - Wall
   layers:
   - Default
   - TransparentFX
