@@ -21,7 +21,7 @@ public class EnemyCombat : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         audioSource = GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
-        Debug.Log("[Enemy] Combat system initialized");
+        // Debug.Log("[Enemy] Combat system initialized");
     }
 
     void Update()
@@ -44,7 +44,7 @@ public class EnemyCombat : MonoBehaviour
         float distance = Vector3.Distance(transform.position, player.position);
         if (distance > attackRange)
         {
-            Debug.Log($"[Enemy] Player too far: {distance:F1}m/{attackRange}m");
+            // Debug.Log($"[Enemy] Player too far: {distance:F1}m/{attackRange}m");
             return false;
         }
 
@@ -53,29 +53,27 @@ public class EnemyCombat : MonoBehaviour
         // Visualize the LOS check in Scene view (only visible in Editor)
         Debug.DrawRay(transform.position, directionToPlayer * attackRange, Color.red, 0.1f);
 
-        // Check for any obstructions (use default layer mask or include environment layers)
         if (Physics.Raycast(transform.position, directionToPlayer, out RaycastHit hit, attackRange))
         {
-            // Check if the hit object is the player
             if (hit.collider.CompareTag("Player"))
             {
-                Debug.Log("[Enemy] LOS: CLEAR - Player visible");
+                // Debug.Log("[Enemy] LOS: CLEAR - Player visible");
                 return true;
             }
             else
             {
-                Debug.Log($"[Enemy] LOS: BLOCKED by {hit.collider.name}");
+                // Debug.Log($"[Enemy] LOS: BLOCKED by {hit.collider.name}");
                 return false;
             }
         }
         
-        Debug.Log("[Enemy] LOS: No obstructions but player not hit (edge case)");
+        // Debug.Log("[Enemy] LOS: No obstructions but player not hit (edge case)");
         return false;
     }
 
     void AttackPlayer()
     {
-        Debug.Log("[Enemy] INITIATING ATTACK");
+        // Debug.Log("[Enemy] INITIATING ATTACK");
         
         AttemptDamage();
         
@@ -87,7 +85,7 @@ public class EnemyCombat : MonoBehaviour
     {
         muzzleFlash?.Play();
         audioSource.PlayOneShot(gunshotSound);
-        Debug.Log("[Enemy] Fired weapon");
+        // Debug.Log("[Enemy] Fired weapon");
     }
 
     void AttemptDamage()
@@ -103,16 +101,16 @@ public class EnemyCombat : MonoBehaviour
             {
                 health.TakeDamage(attackDamage);
                 SpawnHitEffect(hit.point, hit.normal);
-                Debug.Log($"[Enemy] HIT: Dealt {attackDamage} damage");
+                // Debug.Log($"[Enemy] HIT: Dealt {attackDamage} damage");
             }
             else
             {
-                Debug.LogError("[Enemy] Player missing PlayerHealth component!");
+                // Debug.LogError("[Enemy] Player missing PlayerHealth component!");
             }
         }
         else
         {
-            Debug.Log("[Enemy] ATTACK MISSED");
+            // Debug.Log("[Enemy] ATTACK MISSED");
         }
     }
 
@@ -121,7 +119,7 @@ public class EnemyCombat : MonoBehaviour
         if (hitEffect != null)
         {
             Instantiate(hitEffect, position, Quaternion.LookRotation(normal));
-            Debug.Log("[Enemy] Spawned impact effect");
+            // Debug.Log("[Enemy] Spawned impact effect");
         }
     }
 
