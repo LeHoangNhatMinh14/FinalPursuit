@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 public class WeaponSwitcher : MonoBehaviour
 {
@@ -33,31 +34,30 @@ public class WeaponSwitcher : MonoBehaviour
         }
     }
 
-    IEnumerator<WaitForSeconds> SwitchWeaponRoutine(int newIndex)
+    IEnumerator SwitchWeaponRoutine(int newIndex)
     {
         isSwitching = true;
-        Debug.Log($"Weapon switch started to weapon #{newIndex}");
         
-        // Disable current weapon
+        // 1. Hide current weapon
         if (activeWeaponParent.transform.childCount > 0)
         {
-            GameObject oldWeapon = activeWeaponParent.transform.GetChild(0).gameObject;
-            Debug.Log($"Destroying current weapon: {oldWeapon.name}");
-            Destroy(oldWeapon);
+            Transform oldWeapon = activeWeaponParent.transform.GetChild(0);
+            oldWeapon.gameObject.SetActive(false); // Disable instead of destroy
+            Destroy(oldWeapon.gameObject); // Or keep pooled if you want faster switching
         }
 
-        // Instantiate new weapon
+        // 2. Create new weapon
         GameObject newWeapon = Instantiate(weaponPrefabs[newIndex], activeWeaponParent.transform);
         newWeapon.transform.localPosition = Vector3.zero;
         newWeapon.transform.localRotation = Quaternion.identity;
+        newWeapon.SetActive(true); // Ensure it's active
         
-        Debug.Log($"Instantiated new weapon: {newWeapon.name}");
+        Debug.Log($"Spawned: {newWeapon.name} at {activeWeaponParent.name}");
 
-        // Wait for switch animation/time
         yield return new WaitForSeconds(switchTime);
-        
+
         isSwitching = false;
-        Debug.Log($"Weapon switch completed to weapon #{newIndex}");
+
     }
 
     // Call this directly if you don't want animation time

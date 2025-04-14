@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyCombat : MonoBehaviour
 {
@@ -7,110 +8,203 @@ public class EnemyCombat : MonoBehaviour
     public float attackDamage = 10f;
     public float attackCooldown = 2f;
     public LayerMask playerLayer;
-    
+
     [Header("Visual Feedback")]
     public ParticleSystem muzzleFlash;
     public GameObject hitEffect;
     public AudioClip gunshotSound;
-    
+
+    [Header("Patrol Settings")]
+    public float patrolRadius = 10f;
+    public float patrolWaitTime = 2f;
+
     private Transform player;
     private float lastAttackTime;
     private AudioSource audioSource;
+    private NavMeshAgent agent;
+    private Vector3 patrolTarget;
+    private float patrolTimer;
+
+    private enum State { Patrol, Attack }
+    private State currentState = State.Patrol;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        Debug.Log("player found" + player);
+        if (player == null)
+        {
+            Debug.LogError("Player not found! Make sure the player has the 'Player' tag.");
+        }
+
         audioSource = GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
-        // Debug.Log("[Enemy] Combat system initialized");
+        agent = GetComponent<NavMeshAgent>();
+
+        if (muzzleFlash == null) Debug.LogWarning("Muzzle Flash is not assigned.");
+        if (hitEffect == null) Debug.LogWarning("Hit Effect is not assigned.");
+        if (gunshotSound == null) Debug.LogWarning("Gunshot Sound is not assigned.");
+
+        ChooseNewPatrolTarget();
     }
 
     void Update()
     {
-        if (CanSeePlayer() && ReadyToAttack())
+        bool canSeePlayer = CanSeePlayer();
+        Debug.Log("Can see player: " + canSeePlayer);
+
+        currentState = canSeePlayer ? State.Attack : State.Patrol;
+
+        switch (currentState)
         {
-            AttackPlayer();
+            case State.Patrol:
+                Patrol();
+                break;
+            case State.Attack:
+                AttackPlayer();
+                break;
+        }
+    }
+
+    void Patrol()
+    {
+        Debug.Log("Patrolling...");
+        agent.isStopped = false;
+
+        if (Vector3.Distance(transform.position, patrolTarget) < 1f)
+        {
+            patrolTimer += Time.deltaTime;
+            if (patrolTimer >= patrolWaitTime)
+            {
+                ChooseNewPatrolTarget();
+                patrolTimer = 0f;
+            }
+        }
+        else
+        {
+            agent.SetDestination(patrolTarget);
+        }
+    }
+
+    void ChooseNewPatrolTarget()
+    {
+        Vector3 randomDirection = Random.insideUnitSphere * patrolRadius;
+        randomDirection += transform.position;
+        NavMeshHit hit;
+
+        if (NavMesh.SamplePosition(randomDirection, out hit, patrolRadius, NavMesh.AllAreas))
+        {
+            patrolTarget = hit.position;
+            Debug.Log("New patrol target chosen: " + patrolTarget);
+        }
+    }
+
+    void AttackPlayer()
+    {
+        Debug.Log("Attempting to attack player.");
+
+        agent.isStopped = true;
+        transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
+
+        if (ReadyToAttack())
+        {
+            Debug.Log("Attacking player!");
+            AttemptDamage();
+            lastAttackTime = Time.time;
+        }
+        else
+        {
+            Debug.Log("Waiting for attack cooldown.");
         }
     }
 
     bool ReadyToAttack()
     {
-        bool ready = Time.time > lastAttackTime + attackCooldown;
-        // if (!ready) Debug.Log($"[Enemy] Attack on cooldown. Ready in {lastAttackTime + attackCooldown - Time.time:F1}s");
-        return ready;
+        return Time.time > lastAttackTime + attackCooldown;
     }
 
     bool CanSeePlayer()
     {
         float distance = Vector3.Distance(transform.position, player.position);
+        Debug.Log("Distance to player: " + distance);
+
         if (distance > attackRange)
         {
-            // Debug.Log($"[Enemy] Player too far: {distance:F1}m/{attackRange}m");
+            Debug.Log("Player out of range.");
             return false;
         }
 
-        Vector3 directionToPlayer = (player.position - transform.position).normalized;
-        
-        // Visualize the LOS check in Scene view (only visible in Editor)
-        Debug.DrawRay(transform.position, directionToPlayer * attackRange, Color.red, 0.1f);
+        Vector3 eyePosition = transform.position + Vector3.up * 1.5f;
+        Vector3 directionToPlayer = (player.position - eyePosition).normalized;
 
-        if (Physics.Raycast(transform.position, directionToPlayer, out RaycastHit hit, attackRange))
+        Debug.DrawRay(eyePosition, directionToPlayer * attackRange, Color.red);
+
+        if (Physics.Raycast(eyePosition, directionToPlayer, out RaycastHit hit, attackRange))
         {
-            if (hit.collider.CompareTag("Player"))
-            {
-                // Debug.Log("[Enemy] LOS: CLEAR - Player visible");
-                return true;
-            }
-            else
-            {
-                // Debug.Log($"[Enemy] LOS: BLOCKED by {hit.collider.name}");
-                return false;
-            }
+            Debug.Log("Raycast hit: " + hit.collider.name);
+            return hit.collider.CompareTag("Player");
         }
-        
-        // Debug.Log("[Enemy] LOS: No obstructions but player not hit (edge case)");
+
         return false;
-    }
-
-    void AttackPlayer()
-    {
-        // Debug.Log("[Enemy] INITIATING ATTACK");
-        
-        AttemptDamage();
-        
-        lastAttackTime = Time.time;
-        // Debug.Log($"[Enemy] Next attack available at {lastAttackTime + attackCooldown:F1}");
-    }
-
-    void PlayAttackEffects()
-    {
-        muzzleFlash?.Play();
-        audioSource.PlayOneShot(gunshotSound);
-        // Debug.Log("[Enemy] Fired weapon");
     }
 
     void AttemptDamage()
     {
-        if (Physics.Raycast(transform.position, 
-            (player.position - transform.position).normalized, 
-            out RaycastHit hit,
-            attackRange,
-            playerLayer) && 
-            hit.collider.CompareTag("Player"))
+        PlayAttackEffects();
+
+        Vector3 eyePosition = transform.position + Vector3.up * 1.5f;
+        Vector3 directionToPlayer = (player.position - eyePosition).normalized;
+
+        Debug.DrawRay(eyePosition, directionToPlayer * attackRange, Color.red, 1f);
+
+        try
         {
-            if (hit.collider.TryGetComponent(out PlayerHealth health))
+            if (Physics.Raycast(eyePosition, directionToPlayer, out RaycastHit hit, attackRange, playerLayer))
             {
-                health.TakeDamage(attackDamage);
-                SpawnHitEffect(hit.point, hit.normal);
-                // Debug.Log($"[Enemy] HIT: Dealt {attackDamage} damage");
+                Debug.Log("Raycast hit: " + hit.collider.name);
+
+                if (hit.collider.CompareTag("Player"))
+                {
+                    Debug.Log("Player hit confirmed!");
+
+                    var health = hit.collider.GetComponent<PlayerHealth>();
+                    if (health != null)
+                    {
+                        Debug.Log("Applying damage: " + attackDamage);
+                        health.TakeDamage(attackDamage);
+                        SpawnHitEffect(hit.point, hit.normal);
+                    }
+                    else
+                    {
+                        Debug.LogError("No PlayerHealth component found on Player!");
+                    }
+                }
+                else
+                {
+                    Debug.Log("Raycast hit non-player: " + hit.collider.tag);
+                }
             }
             else
             {
-                // Debug.LogError("[Enemy] Player missing PlayerHealth component!");
+                Debug.Log("Raycast missed.");
             }
         }
-        else
+        catch (System.Exception e)
         {
-            // Debug.Log("[Enemy] ATTACK MISSED");
+            Debug.LogError("Exception in AttemptDamage: " + e.Message);
+        }
+    }
+
+
+    void PlayAttackEffects()
+    {
+         if (muzzleFlash != null)
+        {
+            muzzleFlash.Play();
+        }
+
+        if (gunshotSound != null)
+        {
+            audioSource.PlayOneShot(gunshotSound);
         }
     }
 
@@ -119,7 +213,6 @@ public class EnemyCombat : MonoBehaviour
         if (hitEffect != null)
         {
             Instantiate(hitEffect, position, Quaternion.LookRotation(normal));
-            // Debug.Log("[Enemy] Spawned impact effect");
         }
     }
 
@@ -127,9 +220,5 @@ public class EnemyCombat : MonoBehaviour
     {
         Gizmos.color = new Color(1, 0, 0, 0.3f);
         Gizmos.DrawWireSphere(transform.position, attackRange);
-        if (player != null)
-        {
-            Gizmos.DrawLine(transform.position, player.position);
-        }
     }
 }
