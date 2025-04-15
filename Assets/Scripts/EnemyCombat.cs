@@ -9,141 +9,180 @@ public class EnemyCombat : MonoBehaviour
     public float attackCooldown = 2f;
     public LayerMask playerLayer;
 
+    [Header("Patrol Settings")]
+    public Transform InitialPosition;
+    public Transform patrolNode;
+    public float nodeWaitTime = 1f;
+    public float nodeReachedDistance = 0.5f;
+    public float newPositionInterval = 5f; // Time between getting new positions
+    public float wanderRadius = 10f; // Radius for random position generation
+
     [Header("Visual Feedback")]
     public ParticleSystem muzzleFlash;
     public GameObject hitEffect;
     public AudioClip gunshotSound;
 
-    [Header("Patrol Settings")]
-    public float patrolRadius = 10f;
-    public float patrolWaitTime = 2f;
-
     private Transform player;
     private float lastAttackTime;
     private AudioSource audioSource;
     private NavMeshAgent agent;
-    private Vector3 patrolTarget;
-    private float patrolTimer;
+    private float waitTimer;
+    private Vector3 initialPosition;
+    private bool goingToNode = true;
+    private float lastPositionUpdateTime;
 
     private enum State { Patrol, Attack }
     private State currentState = State.Patrol;
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        Debug.Log("player found" + player);
-        if (player == null)
-        {
-            Debug.LogError("Player not found! Make sure the player has the 'Player' tag.");
-        }
-
+        player = GameObject.FindGameObjectWithTag("Player")?.transform;
         audioSource = GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
         agent = GetComponent<NavMeshAgent>();
 
-        if (muzzleFlash == null) Debug.LogWarning("Muzzle Flash is not assigned.");
-        if (hitEffect == null) Debug.LogWarning("Hit Effect is not assigned.");
-        if (gunshotSound == null) Debug.LogWarning("Gunshot Sound is not assigned.");
+        // Try to find nearest point on the NavMesh
+        if (NavMesh.SamplePosition(transform.position, out NavMeshHit navHit, 1.0f, NavMesh.AllAreas))
+        {
+            initialPosition = navHit.position;
+        }
+        else
+        {
+            // Debug.LogWarning("Initial position not found on NavMesh. Using raw position.");
+            initialPosition = transform.position;
+        }
 
-        ChooseNewPatrolTarget();
+        if (!patrolNode)
+        {
+            // patrolNode = new GameObject("PatrolNode").transform;
+            GetNewPosition(); // Generate initial patrol node position
+        }
+
+        // Debug.Log($"[Start] Initial position: {initialPosition}, Patrol node: {patrolNode.position}");
+        SetNextDestination();
+        lastPositionUpdateTime = Time.time;
     }
 
     void Update()
     {
-        bool canSeePlayer = CanSeePlayer();
-        Debug.Log("Can see player: " + canSeePlayer);
-
-        currentState = canSeePlayer ? State.Attack : State.Patrol;
-
-        switch (currentState)
+        if (!player)
         {
-            case State.Patrol:
-                Patrol();
-                break;
-            case State.Attack:
-                AttackPlayer();
-                break;
+            // Debug.LogWarning("[Update] No player found.");
+            return;
+        }
+
+        if (CanSeePlayer())
+        {
+            if (currentState != State.Attack)
+            {
+                // Debug.Log("[State] Switching to ATTACK state.");
+                currentState = State.Attack;
+            }
+            AttackPlayer();
+        }
+        else
+        {
+            if (currentState != State.Patrol)
+            {
+                // Debug.Log("[State] Switching to PATROL state.");
+                currentState = State.Patrol;
+            }
+            Patrol();
         }
     }
 
     void Patrol()
     {
-        Debug.Log("Patrolling...");
         agent.isStopped = false;
 
-        if (Vector3.Distance(transform.position, patrolTarget) < 1f)
+        // Check if it's time to get a new position
+        if (Time.time - lastPositionUpdateTime > newPositionInterval)
         {
-            patrolTimer += Time.deltaTime;
-            if (patrolTimer >= patrolWaitTime)
+            GetNewPosition();
+            lastPositionUpdateTime = Time.time;
+        }
+
+        Vector3 rawTarget = goingToNode ? patrolNode.position : initialPosition;
+        Vector3 flatTarget = new Vector3(rawTarget.x, transform.position.y, rawTarget.z);
+
+        float distanceToTarget = Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z),
+                                                new Vector3(flatTarget.x, 0, flatTarget.z));
+
+        // Debug.Log($"[Patrol] Moving to {(goingToNode ? "Patrol Node" : "Initial Position")}, Distance (flat): {distanceToTarget}");
+
+        if (distanceToTarget <= nodeReachedDistance)
+        {
+            waitTimer += Time.deltaTime;
+            // Debug.Log($"[Patrol] Reached node. Waiting... Timer: {waitTimer}");
+
+            if (waitTimer >= nodeWaitTime)
             {
-                ChooseNewPatrolTarget();
-                patrolTimer = 0f;
+                goingToNode = !goingToNode;
+                // Debug.Log($"[Patrol] Switching direction. Going to: {(goingToNode ? "Patrol Node" : "Initial Position")}");
+                SetNextDestination();
+                waitTimer = 0f;
+            }
+        }
+    }
+
+    void GetNewPosition()
+    {
+        Vector3 randomDirection = Random.insideUnitSphere * wanderRadius;
+        randomDirection += initialPosition;
+        
+        if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, wanderRadius, NavMesh.AllAreas))
+        {
+            patrolNode.position = hit.position;
+            // Debug.Log($"[GetNewPosition] New patrol position set to: {hit.position}");
+            
+            // If we're currently going to the node, update the destination immediately
+            if (goingToNode)
+            {
+                SetNextDestination();
             }
         }
         else
         {
-            agent.SetDestination(patrolTarget);
+            // Debug.LogWarning("[GetNewPosition] Failed to find valid NavMesh position");
         }
     }
 
-    void ChooseNewPatrolTarget()
+    void SetNextDestination()
     {
-        Vector3 randomDirection = Random.insideUnitSphere * patrolRadius;
-        randomDirection += transform.position;
-        NavMeshHit hit;
-
-        if (NavMesh.SamplePosition(randomDirection, out hit, patrolRadius, NavMesh.AllAreas))
-        {
-            patrolTarget = hit.position;
-            Debug.Log("New patrol target chosen: " + patrolTarget);
-        }
+        Vector3 rawTarget = goingToNode ? patrolNode.position : initialPosition;
+        Vector3 flatTarget = new Vector3(rawTarget.x, transform.position.y, rawTarget.z);
+        // Debug.Log($"[SetNextDestination] Setting destination to: {flatTarget}");
+        agent.SetDestination(flatTarget);
     }
 
     void AttackPlayer()
     {
-        Debug.Log("Attempting to attack player.");
-
         agent.isStopped = true;
-        transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
+        Vector3 lookTarget = new Vector3(player.position.x, transform.position.y, player.position.z);
+        transform.LookAt(lookTarget);
 
         if (ReadyToAttack())
         {
-            Debug.Log("Attacking player!");
             AttemptDamage();
             lastAttackTime = Time.time;
-        }
-        else
-        {
-            Debug.Log("Waiting for attack cooldown.");
         }
     }
 
     bool ReadyToAttack()
     {
-        return Time.time > lastAttackTime + attackCooldown;
+        bool ready = Time.time > lastAttackTime + attackCooldown;
+        return ready;
     }
 
     bool CanSeePlayer()
     {
-        float distance = Vector3.Distance(transform.position, player.position);
-        Debug.Log("Distance to player: " + distance);
+        float dist = Vector3.Distance(transform.position, player.position);
+        if (dist > attackRange) return false;
 
-        if (distance > attackRange)
+        Vector3 direction = (player.position - transform.position).normalized;
+        if (Physics.Raycast(transform.position, direction, out RaycastHit hit, attackRange))
         {
-            Debug.Log("Player out of range.");
-            return false;
-        }
-
-        Vector3 eyePosition = transform.position + Vector3.up * 1.5f;
-        Vector3 directionToPlayer = (player.position - eyePosition).normalized;
-
-        Debug.DrawRay(eyePosition, directionToPlayer * attackRange, Color.red);
-
-        if (Physics.Raycast(eyePosition, directionToPlayer, out RaycastHit hit, attackRange))
-        {
-            Debug.Log("Raycast hit: " + hit.collider.name);
             return hit.collider.CompareTag("Player");
         }
-
         return false;
     }
 
@@ -151,66 +190,27 @@ public class EnemyCombat : MonoBehaviour
     {
         PlayAttackEffects();
 
-        Vector3 eyePosition = transform.position + Vector3.up * 1.5f;
-        Vector3 directionToPlayer = (player.position - eyePosition).normalized;
-
-        Debug.DrawRay(eyePosition, directionToPlayer * attackRange, Color.red, 1f);
-
-        try
+        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, attackRange, playerLayer))
         {
-            if (Physics.Raycast(eyePosition, directionToPlayer, out RaycastHit hit, attackRange, playerLayer))
+            Debug.Log($"[Damage] Hit something: {hit.collider.name}");
+            if (hit.collider.TryGetComponent<PlayerHealth>(out PlayerHealth health))
             {
-                Debug.Log("Raycast hit: " + hit.collider.name);
-
-                if (hit.collider.CompareTag("Player"))
-                {
-                    Debug.Log("Player hit confirmed!");
-
-                    var health = hit.collider.GetComponent<PlayerHealth>();
-                    if (health != null)
-                    {
-                        Debug.Log("Applying damage: " + attackDamage);
-                        health.TakeDamage(attackDamage);
-                        SpawnHitEffect(hit.point, hit.normal);
-                    }
-                    else
-                    {
-                        Debug.LogError("No PlayerHealth component found on Player!");
-                    }
-                }
-                else
-                {
-                    Debug.Log("Raycast hit non-player: " + hit.collider.tag);
-                }
+                Debug.Log("[Damage] Damaging player.");
+                health.TakeDamage(attackDamage);
+                SpawnHitEffect(hit.point, hit.normal);
             }
-            else
-            {
-                Debug.Log("Raycast missed.");
-            }
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError("Exception in AttemptDamage: " + e.Message);
         }
     }
 
-
     void PlayAttackEffects()
     {
-         if (muzzleFlash != null)
-        {
-            muzzleFlash.Play();
-        }
-
-        if (gunshotSound != null)
-        {
-            audioSource.PlayOneShot(gunshotSound);
-        }
+        if (muzzleFlash) muzzleFlash.Play();
+        if (gunshotSound) audioSource.PlayOneShot(gunshotSound);
     }
 
     void SpawnHitEffect(Vector3 position, Vector3 normal)
     {
-        if (hitEffect != null)
+        if (hitEffect)
         {
             Instantiate(hitEffect, position, Quaternion.LookRotation(normal));
         }
@@ -218,7 +218,17 @@ public class EnemyCombat : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
+        if (patrolNode)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(transform.position, patrolNode.position);
+        }
+
         Gizmos.color = new Color(1, 0, 0, 0.3f);
         Gizmos.DrawWireSphere(transform.position, attackRange);
+        
+        // Draw wander radius
+        Gizmos.color = new Color(0, 1, 0, 0.2f);
+        Gizmos.DrawWireSphere(initialPosition, wanderRadius);
     }
 }
