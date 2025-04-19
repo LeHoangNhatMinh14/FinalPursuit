@@ -1,77 +1,66 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using StarterAssets;
-using UnityEditor;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
-using System.Collections;
 using System.Linq;
+using StarterAssets;
+using UnityEditor;
+using TMPro;
+using UnityEngine.EventSystems;
 
 public class EnemyCounter : MonoBehaviour
 {
     public static EnemyCounter Instance;
-    
-    [Header("Scene Transition")]
-    #if UNITY_EDITOR
-    [SerializeField] private SceneAsset nextSceneAsset; // Editor-only reference
-    #endif
-    [SerializeField] private string nextSceneName; // Runtime name
 
-    [Header("Perk System")]
-    [SerializeField] private GameObject perkSelectionPanel;
+    [Header("Scene Settings")]
+    [SerializeField] private string nextSceneName;
+    [SerializeField] private SceneAsset sceneAsset;
+
+    [Header("Perk UI")]
+    [SerializeField] private GameObject perkPanel;
     [SerializeField] private Transform cardContainer;
     [SerializeField] private GameObject cardPrefab;
-    [SerializeField] private float cardRevealDelay = 0.3f;
-    [SerializeField] private float cardRevealDuration = 0.5f;
-    [SerializeField] private List<Perk> allPossiblePerks;
 
-    private int currentEnemies = 0;
-    private bool isShowingPerks = false;
+    [Header("Perks")]
+    [SerializeField] private List<Perk> allPerks;
 
-        void Awake()
+    private int enemyCount = 0;
+    private bool isChoosingPerk = false;
+    private bool perkSelected = false;
+
+    private WeaponHolder weaponHolder;
+
+    private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            #if UNITY_EDITOR
-            if (nextSceneAsset != null)
-            {
-                nextSceneName = nextSceneAsset.name;
-            }
-            #endif
-            
-            // Ensure panel is hidden at start
-            if(perkSelectionPanel != null)
-                perkSelectionPanel.SetActive(false);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+
+        weaponHolder = FindObjectOfType<WeaponHolder>();
+        perkPanel.SetActive(false);
     }
 
     public void AddEnemy(GameObject enemy)
     {
-        currentEnemies++;
-        Debug.Log($"Enemy added: {enemy.name}. Total: {currentEnemies}");
+        enemyCount++;
+        Debug.Log($"[Counter] Added {enemy.name} | Total Enemies: {enemyCount}");
     }
-
     public void RemoveEnemy(GameObject enemy)
     {
-        currentEnemies--;
-        Debug.Log($"Enemy removed: {enemy.name}. Remaining: {currentEnemies}");
+        enemyCount--;
+        Debug.Log($"[Counter] Removed {enemy.name} | Remaining Enemies: {enemyCount}");
 
-        if (currentEnemies <= 0 && !isShowingPerks)
+        if (enemyCount <= 0 && !isChoosingPerk)
         {
-            StartCoroutine(LevelCompleteSequence());
+            StartCoroutine(HandleLevelEnd());
         }
     }
 
-    IEnumerator LevelCompleteSequence()
+    private IEnumerator HandleLevelEnd()
     {
-        isShowingPerks = true;
-        
-        // Disable player input
+        isChoosingPerk = true;
+
+        // Disable player control
         var player = FindObjectOfType<FirstPersonController>();
         if (player != null)
         {
@@ -79,161 +68,130 @@ public class EnemyCounter : MonoBehaviour
             player.enabled = false;
         }
 
-        // Show perk selection
-        yield return StartCoroutine(ShowPerkSelection());
+        // Show mouse cursor
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
 
-        // Load next scene after perk selection
+
+        yield return StartCoroutine(ShowPerkChoices());
+
+        // Wait until a perk is selected
+        yield return new WaitUntil(() => perkSelected);
+
+        // Load next scene
         if (!string.IsNullOrEmpty(nextSceneName))
         {
             SceneManager.LoadScene(nextSceneName);
         }
+    }
+
+    private IEnumerator ShowPerkChoices()
+    {
+        perkSelected = false;
+        perkPanel.SetActive(true);
+
+        // Clear old cards if needed
+        foreach (Transform child in cardContainer)
+        {
+            Destroy(child.gameObject);
+        }
+
+        var perks = allPerks.OrderBy(x => Random.value).Take(3).ToList();
+
+        foreach (var perk in perks)
+        {
+            var card = Instantiate(cardPrefab, cardContainer);
+            SetupCard(card, perk);
+
+            var canvasGroup = card.GetComponent<CanvasGroup>();
+            if (canvasGroup != null)
+                StartCoroutine(AnimateCard(card)); // Play the animation
+        }
+
+        yield return null;
+    }
+
+private void SetupCard(GameObject card, Perk perk)
+{
+    card.transform.Find("Title").GetComponent<TMP_Text>().text = perk.perkName;
+    card.transform.Find("Description").GetComponent<TMP_Text>().text = perk.description;
+    card.transform.Find("Icon").GetComponent<Image>().sprite = perk.icon;
+
+    var button = card.GetComponent<Button>();
+    button.onClick.AddListener(() => SelectPerk(perk));
+
+    // Add hover events for glow
+    Image bgImage = card.GetComponent<Image>(); // or card.transform.Find("Background") if using child
+
+    if (bgImage != null)
+    {
+        EventTrigger trigger = card.GetComponent<EventTrigger>();
+        if (trigger == null) trigger = card.AddComponent<EventTrigger>();
+
+        // Pointer Enter
+        EventTrigger.Entry enter = new EventTrigger.Entry();
+        enter.eventID = EventTriggerType.PointerEnter;
+        enter.callback.AddListener((_) => {
+            bgImage.color = new Color(1f, 1f, 0.6f, 1f); // Glow tint
+        });
+
+        // Pointer Exit
+        EventTrigger.Entry exit = new EventTrigger.Entry();
+        exit.eventID = EventTriggerType.PointerExit;
+        exit.callback.AddListener((_) => {
+            bgImage.color = Color.white; // Reset to base color
+        });
+
+        trigger.triggers.Add(enter);
+        trigger.triggers.Add(exit);
+    }
+}
+
+    private void SelectPerk(Perk perk)
+    {
+        Debug.Log($"Selected perk: {perk.perkName}");
+
+        // If it's a machine gun perk, swap the weapon
+        if (perk.perkName == "Machine Gun" && weaponHolder != null && perk is MachineGunPerk mg)
+        {
+            weaponHolder.EquipOnlyWeapon(mg.weaponPrefab);
+        }
         else
         {
-            Debug.LogError("No next scene assigned!");
+            // All other perks apply their effects (e.g., health boost)
+            perk.ApplyEffect();
         }
+
+        perkSelected = true;
     }
 
-    IEnumerator ShowPerkSelection()
+    private IEnumerator AnimateCard(GameObject card)
     {
-        // Activate the panel
-        perkSelectionPanel.SetActive(true);
+        RectTransform rt = card.GetComponent<RectTransform>();
+        CanvasGroup cg = card.GetComponent<CanvasGroup>();
 
-        // Get all card buttons (assuming you have exactly 3)
-        Button[] cardButtons = cardContainer.GetComponentsInChildren<Button>(true);
-        
-        // Get 3 random perks
-        List<Perk> selectedPerks = GetRandomPerks(3);
+        if (rt == null || cg == null)
+            yield break;
 
-        // Setup each card
-        for (int i = 0; i < cardButtons.Length && i < selectedPerks.Count; i++)
+        float duration = 0.3f;
+        float elapsed = 0f;
+
+        Vector3 startScale = Vector3.zero;
+        Vector3 endScale = Vector3.one;
+
+        cg.alpha = 0;
+        rt.localScale = startScale;
+
+        while (elapsed < duration)
         {
-            GameObject cardObj = cardButtons[i].gameObject;
-            cardObj.SetActive(false); // Start hidden
-            SetupCardUI(cardObj, selectedPerks[i]);
-        }
-
-        // Animate card reveal one by one
-        for (int i = 0; i < cardButtons.Length; i++)
-        {
-            cardButtons[i].gameObject.SetActive(true);
-            yield return StartCoroutine(AnimateCardReveal(cardButtons[i].gameObject));
-            yield return new WaitForSeconds(cardRevealDelay);
-        }
-    }
-
-    IEnumerator AnimateCardReveal(GameObject card)
-    {
-        // Initial state (scaled down)
-        card.transform.localScale = Vector3.zero;
-        
-        // Animate scale up
-        float timer = 0f;
-        while (timer < cardRevealDuration)
-        {
-            timer += Time.deltaTime;
-            float progress = Mathf.Clamp01(timer / cardRevealDuration);
-            card.transform.localScale = Vector3.one * progress;
+            float t = elapsed / duration;
+            rt.localScale = Vector3.Lerp(startScale, endScale, t);
+            cg.alpha = t;
+            elapsed += Time.unscaledDeltaTime; // In case game is paused
             yield return null;
         }
 
-        // Final state
-        card.transform.localScale = Vector3.one;
-    }
-
-    void SetupCardUI(GameObject cardObj, Perk perk)
-    {
-        // Get UI components - adjust these based on your actual UI structure
-        Image icon = cardObj.transform.Find("Icon").GetComponent<Image>();
-        Text title = cardObj.transform.Find("Title").GetComponent<Text>();
-        Text description = cardObj.transform.Find("Description").GetComponent<Text>();
-        Button button = cardObj.GetComponent<Button>();
-
-        // Set perk info
-        icon.sprite = perk.icon;
-        title.text = perk.perkName;
-        description.text = perk.description;
-
-        // Setup button click
-        button.onClick.RemoveAllListeners();
-        button.onClick.AddListener(() => OnPerkSelected(perk));
-    }
-
-    List<Perk> GetRandomPerks(int count)
-    {
-        // Make sure we don't try to get more perks than available
-        count = Mathf.Min(count, allPossiblePerks.Count);
-        
-        // Get random perks without duplicates
-        return allPossiblePerks.OrderBy(x => Random.value).Take(count).ToList();
-    }
-
-    void OnPerkSelected(Perk selectedPerk)
-    {
-        Debug.Log($"Perk selected: {selectedPerk.perkName}");
-        
-        // Apply the perk effect
-        selectedPerk.ApplyEffect();
-
-        // Mark selection as made
-        PlayerPrefs.SetInt("PerkSelected", 1);
-    }
-
-    bool PerkSelectionMade()
-    {
-        return PlayerPrefs.GetInt("PerkSelected", 0) == 1;
-    }
-}
-
-[System.Serializable]
-public class Perk
-{
-    public string perkName;
-    public Sprite icon;
-    [TextArea] public string description;
-
-    public virtual void ApplyEffect()
-    {
-        // Base implementation - override this for specific perks
-        Debug.Log($"Applying perk: {perkName}");
-        
-        // Example: You might want to store selected perks for the player
-        // PlayerStats.Instance.AddPerk(this);
-    }
-}
-
-// Example perk implementations
-[System.Serializable]
-public class HealthIncreasePerk : Perk
-{
-    public float healthIncreaseAmount = 25f;
-
-    public override void ApplyEffect()
-    {
-        base.ApplyEffect();
-        // Example: FindObjectOfType<PlayerHealth>().IncreaseMaxHealth(healthIncreaseAmount);
-    }
-}
-
-[System.Serializable]
-public class DamageBoostPerk : Perk
-{
-    public float damageMultiplier = 1.2f;
-
-    public override void ApplyEffect()
-    {
-        base.ApplyEffect();
-        // Example: PlayerStats.Instance.damageMultiplier *= damageMultiplier;
-    }
-}
-
-[System.Serializable]
-public class SpeedBoostPerk : Perk
-{
-    public float speedIncrease = 1.5f;
-
-    public override void ApplyEffect()
-    {
-        base.ApplyEffect();
-        // Example: FindObjectOfType<FirstPersonController>().MoveSpeed += speedIncrease;
+        rt.localScale = endScale;
+        cg.alpha = 1;
     }
 }
