@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd23ca3f137ff324fb615569e93591cb, type: 3}
   m_Name: Machine Gun
   m_EditorClassIdentifier: 
+  cardImage: {fileID: 21300000, guid: 62a80705b42bb484dbcdcd4d893b20cf, type: 3}
   perkName: Machine Gun
-  icon: {fileID: 21300000, guid: 6c03e2b128bf74f4a9ce176eb62b1b90, type: 3}
   description: Get a machine gun lmao
   weaponPrefab: {fileID: 3206066849736246504, guid: 96dec0a09682bdd44a6bdf8ab4138c32, type: 3}

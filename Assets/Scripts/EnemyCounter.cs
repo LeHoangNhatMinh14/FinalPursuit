@@ -111,41 +111,20 @@ public class EnemyCounter : MonoBehaviour
         yield return null;
     }
 
-private void SetupCard(GameObject card, Perk perk)
-{
-    card.transform.Find("Title").GetComponent<TMP_Text>().text = perk.perkName;
-    card.transform.Find("Description").GetComponent<TMP_Text>().text = perk.description;
-    card.transform.Find("Icon").GetComponent<Image>().sprite = perk.icon;
-
-    var button = card.GetComponent<Button>();
-    button.onClick.AddListener(() => SelectPerk(perk));
-
-    // Add hover events for glow
-    Image bgImage = card.GetComponent<Image>(); // or card.transform.Find("Background") if using child
-
-    if (bgImage != null)
+    private void SetupCard(GameObject card, Perk perk)
     {
-        EventTrigger trigger = card.GetComponent<EventTrigger>();
-        if (trigger == null) trigger = card.AddComponent<EventTrigger>();
+        var image = card.GetComponent<Image>(); // assuming your card prefab root has the image
+        if (image != null && perk.cardImage != null)
+        {
+            image.sprite = perk.cardImage;
+            image.preserveAspect = true;
+        }
 
-        // Pointer Enter
-        EventTrigger.Entry enter = new EventTrigger.Entry();
-        enter.eventID = EventTriggerType.PointerEnter;
-        enter.callback.AddListener((_) => {
-            bgImage.color = new Color(1f, 1f, 0.6f, 1f); // Glow tint
-        });
-
-        // Pointer Exit
-        EventTrigger.Entry exit = new EventTrigger.Entry();
-        exit.eventID = EventTriggerType.PointerExit;
-        exit.callback.AddListener((_) => {
-            bgImage.color = Color.white; // Reset to base color
-        });
-
-        trigger.triggers.Add(enter);
-        trigger.triggers.Add(exit);
+        var button = card.GetComponent<Button>();
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(() => SelectPerk(perk));
     }
-}
+
 
     private void SelectPerk(Perk perk)
     {

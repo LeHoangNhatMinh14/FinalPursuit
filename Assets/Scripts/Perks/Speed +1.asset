@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70cec8f8983e90f458ec81f4eacc983b, type: 3}
-  m_Name: Health
+  m_Script: {fileID: 11500000, guid: 643d8acba98b8364ab3f83829555c2bf, type: 3}
+  m_Name: Speed +1
   m_EditorClassIdentifier: 
-  perkName: Health +1
-  icon: {fileID: 0}
-  description: Health +1
-  healthBonus: 1
+  cardImage: {fileID: 21300000, guid: ee7aae14bc6df3d43afe61e8765d9c35, type: 3}
+  perkName: Speed +0.5
+  description: Move faster bruh
+  speedBonus: 0.5

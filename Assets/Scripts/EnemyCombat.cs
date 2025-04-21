@@ -186,7 +186,7 @@ public class EnemyCombat : MonoBehaviour
         return false;
     }
 
-    void AttemptDamage()
+    protected virtual void AttemptDamage()
     {
         PlayAttackEffects();
 
@@ -202,7 +202,7 @@ public class EnemyCombat : MonoBehaviour
         }
     }
 
-    void PlayAttackEffects()
+    protected virtual void PlayAttackEffects()
     {
         if (muzzleFlash) muzzleFlash.Play();
         if (gunshotSound) audioSource.PlayOneShot(gunshotSound);
