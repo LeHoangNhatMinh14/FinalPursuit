@@ -12,6 +12,7 @@ using UnityEngine.EventSystems;
 public class EnemyCounter : MonoBehaviour
 {
     public static EnemyCounter Instance;
+    private int playerLives = 3;
 
     [Header("Scene Settings")]
     [SerializeField] private string nextSceneName;
@@ -172,5 +173,17 @@ public class EnemyCounter : MonoBehaviour
 
         rt.localScale = endScale;
         cg.alpha = 1;
+    }
+
+    public void OnPlayerRespawn(int remainingLives)
+    {
+        playerLives = remainingLives;
+        Debug.Log($"[EnemyCounter] Player respawned. Lives left: {playerLives}");
+    }
+
+    public void OnPlayerGameOver()
+    {
+        Debug.Log("[EnemyCounter] Player has lost the game!");
+        // Show Game Over UI, reload scene, etc.
     }
 }
