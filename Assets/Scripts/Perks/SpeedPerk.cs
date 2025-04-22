@@ -11,6 +11,7 @@ public class SpeedPerk : Perk
         var player = GameObject.FindObjectOfType<FirstPersonController>();
         if (player != null)
         {
+            Debug.Log("Chose the speed buff");
             player.MoveSpeed += speedBonus;
         }
     }

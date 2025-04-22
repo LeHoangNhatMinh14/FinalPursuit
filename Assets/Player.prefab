@@ -600,6 +600,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af5e68eeed36031499d7ff8ca468be1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxLives: 3
+  currentLives: 3
   maxHealth: 100
   healthBar: {fileID: 6499071547943118381}
 --- !u!1 &5741879122655067066
@@ -1407,7 +1409,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -90, y: -39.717773}
+  m_AnchoredPosition: {x: -43.211487, y: -39.717773}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2762118914214156414
@@ -1666,6 +1668,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af5e68eeed36031499d7ff8ca468be1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxLives: 3
+  currentLives: 3
   maxHealth: 100
   healthBar: {fileID: 6499071547943118381}
 --- !u!1 &8233007337850465811

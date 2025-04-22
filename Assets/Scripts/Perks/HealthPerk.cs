@@ -10,6 +10,7 @@ public class HealthPerk : Perk
         var player = GameObject.FindObjectOfType<PlayerHealth>();
         if (player != null)
         {
+            Debug.Log("Chose the health buff");
             player.maxHealth += healthBonus;
         }
     }

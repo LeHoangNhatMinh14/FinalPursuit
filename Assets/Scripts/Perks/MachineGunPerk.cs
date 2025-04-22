@@ -10,6 +10,7 @@ public class MachineGunPerk : Perk
         var weaponHolder = GameObject.FindObjectOfType<WeaponHolder>();
         if (weaponHolder != null)
         {
+            Debug.Log("Chose the machine gun buff");
             weaponHolder.EquipOnlyWeapon(weaponPrefab);
         }
     }

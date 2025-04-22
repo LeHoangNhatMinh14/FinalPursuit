@@ -12,6 +12,7 @@ public class SpeedHealthPerk : Perk
         var speed = GameObject.FindObjectOfType<FirstPersonController>();
         if (health != null && speed != null) 
         {
+            Debug.Log("Chose the speed and health buff");
             health.maxHealth += 1;
             speed.MoveSpeed += 1;
         }

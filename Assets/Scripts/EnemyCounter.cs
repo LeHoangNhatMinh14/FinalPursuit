@@ -13,6 +13,7 @@ public class EnemyCounter : MonoBehaviour
 {
     public static EnemyCounter Instance;
     private int playerLives = 3;
+    [SerializeField] private GameObject portalObject;
 
     [Header("Scene Settings")]
     [SerializeField] private string nextSceneName;
@@ -59,31 +60,14 @@ public class EnemyCounter : MonoBehaviour
 
     private IEnumerator HandleLevelEnd()
     {
-        isChoosingPerk = true;
-
-        // Disable player control
-        var player = FindObjectOfType<FirstPersonController>();
-        if (player != null)
+        // Activate portal only
+        if (portalObject != null)
         {
-            player.GetComponent<CharacterController>().enabled = false;
-            player.enabled = false;
+            portalObject.SetActive(true);
+            Debug.Log("[EnemyCounter] All enemies defeated. Portal is now active.");
         }
 
-        // Show mouse cursor
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-
-
-        yield return StartCoroutine(ShowPerkChoices());
-
-        // Wait until a perk is selected
-        yield return new WaitUntil(() => perkSelected);
-
-        // Load next scene
-        if (!string.IsNullOrEmpty(nextSceneName))
-        {
-            SceneManager.LoadScene(nextSceneName);
-        }
+        yield break; // Done here
     }
 
     private IEnumerator ShowPerkChoices()
@@ -110,6 +94,36 @@ public class EnemyCounter : MonoBehaviour
         }
 
         yield return null;
+    }
+
+        public void ShowPerksAfterPortal()
+    {
+        StartCoroutine(StartPerkSelection());
+    }
+
+    private IEnumerator StartPerkSelection()
+    {
+        isChoosingPerk = true;
+
+        // Lock player controls
+        var player = FindObjectOfType<FirstPersonController>();
+        if (player != null)
+        {
+            player.GetComponent<CharacterController>().enabled = false;
+            player.enabled = false;
+        }
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        yield return StartCoroutine(ShowPerkChoices());
+        yield return new WaitUntil(() => perkSelected);
+
+        // ✅ Now load the scene
+        if (!string.IsNullOrEmpty(nextSceneName))
+        {
+            SceneManager.LoadScene(nextSceneName);
+        }
     }
 
     private void SetupCard(GameObject card, Perk perk)
@@ -143,6 +157,12 @@ public class EnemyCounter : MonoBehaviour
         }
 
         perkSelected = true;
+
+        perkPanel.SetActive(false);  
+        if (portalObject != null)
+        {
+            portalObject.SetActive(true); // Now player can walk into it
+        }
     }
 
     private IEnumerator AnimateCard(GameObject card)
