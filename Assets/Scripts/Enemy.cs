@@ -8,13 +8,13 @@ public class Enemy : MonoBehaviour
     public float maxHealth = 100f;
     [SerializeField] private HealthBar healthBar;
     
-    // [Header("Visual Feedback")]
-    // [SerializeField] private Material hitMaterial;
-    // [SerializeField] private GameObject deathEffect;
+    [Header("Visual Feedback (Optional)")]
+    [SerializeField] private Material hitMaterial;
+    [SerializeField] private GameObject deathEffect;
     
     [Header("Stun Settings")]
     public float stunDuration = 3f;
-    public Material stunMaterial; // Visual feedback
+    public Material stunMaterial; // Visual feedback (optional)
     private bool isStunned = false;
     private Coroutine stunRoutine;
     private float currentHealth;
@@ -24,7 +24,9 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         enemyRenderer = GetComponentInChildren<Renderer>();
-        originalMaterial = enemyRenderer.material;
+        if (enemyRenderer != null)
+            originalMaterial = enemyRenderer.material;
+        
         currentHealth = maxHealth;
         
         InitializeHealthBar();
@@ -45,7 +47,7 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            Debug.LogError("HealthBar reference not assigned in Inspector!", this);
+            Debug.LogWarning("HealthBar reference not assigned in Inspector. Health bar will not update.", this);
         }
     }
 
@@ -56,31 +58,37 @@ public class Enemy : MonoBehaviour
         currentHealth -= damage;
         string hitType = isHeadshot ? "HEADSHOT" : "bodyshot";
         
-        // Update health bar
+        // Update health bar (optional)
         if (healthBar != null)
             healthBar.UpdateHealth(currentHealth, maxHealth);
         
-        // // Visual feedback
-        // StartCoroutine(HitFlash());
-        // Debug.Log($"{hitType}! {damage} damage | HP: {currentHealth}/{maxHealth}");
+        // Visual feedback (optional)
+        if (hitMaterial != null && enemyRenderer != null)
+            StartCoroutine(HitFlash());
+        
+        Debug.Log($"{hitType}! {damage} damage | HP: {currentHealth}/{maxHealth}");
 
         if (currentHealth <= 0) Die();
     }
 
-    // private IEnumerator HitFlash()
-    // {
-    //     enemyRenderer.material = hitMaterial;
-    //     yield return new WaitForSeconds(0.1f);
-    //     enemyRenderer.material = originalMaterial;
-    // }
+    private IEnumerator HitFlash()
+    {
+        if (enemyRenderer == null || hitMaterial == null) yield break;
+        
+        enemyRenderer.material = hitMaterial;
+        yield return new WaitForSeconds(0.1f);
+        if (originalMaterial != null) // Safety check
+            enemyRenderer.material = originalMaterial;
+    }
 
     private void Die()
     {
         Debug.Log("Enemy died!");
         
-        // // Death effects
-        // if (deathEffect != null)
-        //     Instantiate(deathEffect, transform.position, Quaternion.identity);
+        // Death effects (optional)
+        if (deathEffect != null)
+            Instantiate(deathEffect, transform.position, Quaternion.identity);
+        
         Destroy(gameObject);
     }
 
@@ -119,8 +127,8 @@ public class Enemy : MonoBehaviour
         isStunned = true;
         Debug.Log($"[STUN] {gameObject.name} stun started at {Time.time:F2}");
 
-        // Visual feedback
-        if (enemyRenderer && stunMaterial)
+        // Visual feedback (optional)
+        if (enemyRenderer != null && stunMaterial != null)
         {
             Debug.Log($"[STUN] {gameObject.name} applying stun material");
             enemyRenderer.material = stunMaterial;
@@ -148,7 +156,7 @@ public class Enemy : MonoBehaviour
         Debug.Log($"[STUN] {gameObject.name} stun ended at {Time.time:F2}");
         isStunned = false;
         
-        if (enemyRenderer && originalMaterial)
+        if (enemyRenderer != null && originalMaterial != null)
         {
             Debug.Log($"[STUN] {gameObject.name} restoring original material");
             enemyRenderer.material = originalMaterial;

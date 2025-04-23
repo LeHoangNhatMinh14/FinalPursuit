@@ -148,7 +148,7 @@ public class EnemyCounter : MonoBehaviour
         // If it's a machine gun perk, swap the weapon
         if (perk.perkName == "Machine Gun" && weaponHolder != null && perk is MachineGunPerk mg)
         {
-            weaponHolder.EquipOnlyWeapon(mg.weaponPrefab);
+            weaponHolder.EquipWeapon(mg.weaponPrefab);
         }
         else
         {

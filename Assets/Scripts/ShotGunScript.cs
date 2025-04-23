@@ -1,17 +1,13 @@
 using UnityEngine;
 
-public class Shotgun : MonoBehaviour
+public class Shotgun : WeaponBase
 {
-    [Header("Damage")]
-    public float bodyDamage = 25f;
-    public float headDamage = 75f;
-
     [Header("Behavior")]
-    public float fireRate = 1f; // 1 second between shots
+    public float fireRate = 1f;
     public float spreadAngle = 10f;
     public float maxDistance = 50f;
     public int pelletsPerShot = 8;
-
+    
     [Header("Effects")]
     public ParticleSystem muzzleFlash;
     public AudioSource gunAudio;
@@ -21,13 +17,12 @@ public class Shotgun : MonoBehaviour
     private float nextFireTime;
     private Camera playerCamera;
 
-    void Start()
+    private void Start()
     {
+        weaponName = "Shotgun";
+        baseBodyDamage = 25f;
+        baseHeadDamage = 75f;
         playerCamera = Camera.main;
-        if (playerCamera == null)
-        {
-            Debug.LogError("Main camera not found!");
-        }
     }
 
     void Update()
@@ -41,15 +36,14 @@ public class Shotgun : MonoBehaviour
 
     void FireShotgun()
     {
-        if (muzzleFlash) muzzleFlash.Play();
-        if (gunAudio && shootSound) gunAudio.PlayOneShot(shootSound);
+        muzzleFlash?.Play();
+        gunAudio?.PlayOneShot(shootSound);
 
         for (int i = 0; i < pelletsPerShot; i++)
         {
             Vector3 shotDirection = GetShotDirection();
-            Debug.DrawRay(playerCamera.transform.position, shotDirection * maxDistance, Color.green, 0.2f);
-
-            if (Physics.Raycast(playerCamera.transform.position, shotDirection, out RaycastHit hit, maxDistance))
+            if (Physics.Raycast(playerCamera.transform.position, shotDirection, 
+                              out RaycastHit hit, maxDistance))
             {
                 ProcessHit(hit);
             }
@@ -59,26 +53,21 @@ public class Shotgun : MonoBehaviour
     Vector3 GetShotDirection()
     {
         Vector3 direction = playerCamera.transform.forward;
-
         direction = Quaternion.AngleAxis(Random.Range(-spreadAngle, spreadAngle), Vector3.up) * direction;
         direction = Quaternion.AngleAxis(Random.Range(-spreadAngle, spreadAngle), Vector3.right) * direction;
-
         return direction;
     }
 
-    void ProcessHit(RaycastHit hit)
+    public override void ProcessHit(RaycastHit hit, bool isHeavyAttack = false)
     {
         bool isHeadshot = hit.collider.CompareTag("Head");
-        float damage = isHeadshot ? headDamage : bodyDamage;
+        float damage = isHeadshot ? CurrentHeadDamage : CurrentBodyDamage;
 
         if (hit.collider.GetComponentInParent<Enemy>() is Enemy enemy)
         {
             enemy.TakeDamage(damage, isHeadshot);
         }
-
-        if (bulletImpactPrefab)
-        {
-            Instantiate(bulletImpactPrefab, hit.point, Quaternion.LookRotation(hit.normal));
-        }
+        
+        Instantiate(bulletImpactPrefab, hit.point, Quaternion.LookRotation(hit.normal));
     }
 }
