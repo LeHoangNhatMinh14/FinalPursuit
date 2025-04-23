@@ -32,10 +32,10 @@ public class Enemy : MonoBehaviour
         InitializeHealthBar();
         Debug.Log($"Enemy spawned with {currentHealth}/{maxHealth} HP");
 
-        if (EnemyCounter.Instance != null)
+        EnemyCounter counter = FindObjectOfType<EnemyCounter>();
+        if (counter != null)
         {
-            EnemyCounter.Instance.AddEnemy(gameObject);
-            Debug.Log($"Enemy registered: {gameObject.name}");
+            counter.AddEnemy(gameObject);
         }
     }
 
@@ -94,11 +94,14 @@ public class Enemy : MonoBehaviour
 
     void OnDestroy()
     {
-        // Only unregister if the game isn't quitting
-        if (EnemyCounter.Instance != null && !GameManager.isApplicationQuitting)
+        if (!GameManager.isApplicationQuitting)
         {
-            EnemyCounter.Instance.RemoveEnemy(gameObject);
-            Debug.Log($"Enemy unregistered: {gameObject.name}");
+            EnemyCounter counter = FindObjectOfType<EnemyCounter>();
+            if (counter != null)
+            {
+                counter.RemoveEnemy(gameObject);
+                Debug.Log($"Enemy unregistered: {gameObject.name}");
+            }
         }
     }
     

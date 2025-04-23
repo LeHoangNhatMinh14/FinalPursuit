@@ -8,7 +8,7 @@ public class WeaponHolder : MonoBehaviour
     private WeaponBase currentWeapon;
     private void Start()
     {
-        if (weaponParent != null)
+        if (weaponParent == null)
         {
             weaponParent = GameObject.Find("WeaponParent").transform;
             GameObject.Find("ActiveWeapon").SetActive(false);

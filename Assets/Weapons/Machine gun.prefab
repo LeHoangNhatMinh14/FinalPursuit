@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 2429162512056039612}
   - component: {fileID: -6672192340786455711}
   m_Layer: 6
-  m_Name: Machine Gun
+  m_Name: Machine gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98,8 +98,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80b626a1d0a25a14cb2f4e15519106f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bodyDamage: 15
-  headDamage: 45
+  weaponName: 
+  baseBodyDamage: 20
+  baseHeadDamage: 60
   fireRate: 0.1
   spreadAngle: 3
   maxDistance: 100

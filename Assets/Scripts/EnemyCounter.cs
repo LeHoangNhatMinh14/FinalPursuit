@@ -11,7 +11,6 @@
 
     public class EnemyCounter : MonoBehaviour
     {
-        public static EnemyCounter Instance;
         private int playerLives = 3;
         [SerializeField] private bool usePortal = true;
         [SerializeField] private GameObject portalObject;
@@ -36,9 +35,6 @@
 
         private void Awake()
         {
-            if (Instance == null) Instance = this;
-            else Destroy(gameObject);
-
             weaponHolder = FindObjectOfType<WeaponHolder>();
             perkPanel.SetActive(false);
             
@@ -119,10 +115,9 @@
         private void RefreshSceneReferences()
         {
             // Find new portal reference in the scene
-            portalObject = GameObject.FindGameObjectWithTag("Portal"); // Make sure your portal has "Portal" tag
-            if (portalObject != null)
+            if (portalObject == null)
             {
-                portalObject.SetActive(!usePortal); // Hide if not used
+                portalObject = GameObject.FindGameObjectWithTag("Portal");
             }
 
             // Find the LevelSettings object in the scene to get next level info

@@ -46,24 +46,25 @@ public class PlayerHealth : MonoBehaviour
 
         if (currentLives > 0)
         {
-            // Respawn or revive logic
             currentHealth = maxHealth;
             fpsController.enabled = true;
 
             if (healthBar != null)
                 healthBar.UpdateHealth(currentHealth, maxHealth);
 
-            // Notify EnemyCounter
-            EnemyCounter.Instance?.OnPlayerRespawn(currentLives);
+            // ✅ Notify EnemyCounter
+            var counter = FindObjectOfType<EnemyCounter>();
+            counter?.OnPlayerRespawn(currentLives);
         }
         else
         {
-            // Final death — game over
             if (fpsController != null)
                 fpsController.enabled = false;
 
             Debug.Log("Out of lives. Game over!");
-            EnemyCounter.Instance?.OnPlayerGameOver();
+
+            var counter = FindObjectOfType<EnemyCounter>();
+            counter?.OnPlayerGameOver();
         }
     }
 }

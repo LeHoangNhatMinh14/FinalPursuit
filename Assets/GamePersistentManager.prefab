@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentWeaponPrefab: {fileID: 0}
-  defaultWeaponPrefab: {fileID: 0}
+  defaultWeaponPrefab: {fileID: 3206066849736246504, guid: ecf3da00fe3e9434caf0b4f88316764f, type: 3}
   unlockedWeapons: []
   playerMoveSpeed: 0
   playerMaxHealth: 0

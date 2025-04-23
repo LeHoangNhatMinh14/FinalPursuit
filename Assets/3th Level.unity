@@ -3506,15 +3506,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6078994401793290481, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 296.64313
+      value: -0.019958496
       objectReference: {fileID: 0}
     - target: {fileID: 6078994401793290481, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.9855905
+      value: 2.432
       objectReference: {fileID: 0}
     - target: {fileID: 6078994401793290481, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 38.63806
+      value: 0.030883789
       objectReference: {fileID: 0}
     - target: {fileID: 6078994401793290481, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5049,6 +5049,76 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05e6442f623bf0c45b4dc86a9d07cd14, type: 3}
+--- !u!1 &1001034541
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1001034544}
+  - component: {fileID: 1001034543}
+  - component: {fileID: 1001034542}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1001034542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1001034541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe54e81f9d3186b49b38626570b16452, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextSceneName: 2th Level
+  usePortal: 1
+  initialEnemyCount: 3
+  levelName: Level 1
+--- !u!114 &1001034543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1001034541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e0d833e1283ebb41a3d76ef7f84691a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  usePortal: 1
+  portalObject: {fileID: 1517777110}
+  nextSceneName: 4th Level
+  sceneAsset: {fileID: 102900000, guid: af8bcf1084a13ef47b8a7ddf141fdb0a, type: 3}
+  perkPanel: {fileID: 626297679}
+  cardContainer: {fileID: 626297678}
+  cardPrefab: {fileID: 2851572854670861921, guid: 3f9e9a662677d414d917df08fef3bc07, type: 3}
+  allPerks:
+  - {fileID: 11400000, guid: 01047c4c3d19ed449a0cf533b06eaf91, type: 2}
+--- !u!4 &1001034544
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1001034541}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 903.25, y: 3.9069986, z: 1024.727}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1010438627
 GameObject:
   m_ObjectHideFlags: 0
@@ -5180,83 +5250,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1010438627}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1001 &1011956739
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 592648891262470372, guid: 79605f7cbd7772d419cb9e8ed5e6c62a, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 922.6431
-      objectReference: {fileID: 0}
-    - target: {fileID: 592648891262470372, guid: 79605f7cbd7772d419cb9e8ed5e6c62a, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.9069986
-      objectReference: {fileID: 0}
-    - target: {fileID: 592648891262470372, guid: 79605f7cbd7772d419cb9e8ed5e6c62a, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1024.727
-      objectReference: {fileID: 0}
-    - target: {fileID: 592648891262470372, guid: 79605f7cbd7772d419cb9e8ed5e6c62a, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 592648891262470372, guid: 79605f7cbd7772d419cb9e8ed5e6c62a, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 592648891262470372, guid: 79605f7cbd7772d419cb9e8ed5e6c62a, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 592648891262470372, guid: 79605f7cbd7772d419cb9e8ed5e6c62a, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 592648891262470372, guid: 79605f7cbd7772d419cb9e8ed5e6c62a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 592648891262470372, guid: 79605f7cbd7772d419cb9e8ed5e6c62a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 592648891262470372, guid: 79605f7cbd7772d419cb9e8ed5e6c62a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1911879390944819898, guid: 79605f7cbd7772d419cb9e8ed5e6c62a, type: 3}
-      propertyPath: perkPanel
-      value: 
-      objectReference: {fileID: 626297679}
-    - target: {fileID: 1911879390944819898, guid: 79605f7cbd7772d419cb9e8ed5e6c62a, type: 3}
-      propertyPath: sceneAsset
-      value: 
-      objectReference: {fileID: 102900000, guid: af8bcf1084a13ef47b8a7ddf141fdb0a, type: 3}
-    - target: {fileID: 1911879390944819898, guid: 79605f7cbd7772d419cb9e8ed5e6c62a, type: 3}
-      propertyPath: portalObject
-      value: 
-      objectReference: {fileID: 1517777110}
-    - target: {fileID: 1911879390944819898, guid: 79605f7cbd7772d419cb9e8ed5e6c62a, type: 3}
-      propertyPath: cardContainer
-      value: 
-      objectReference: {fileID: 626297678}
-    - target: {fileID: 1911879390944819898, guid: 79605f7cbd7772d419cb9e8ed5e6c62a, type: 3}
-      propertyPath: nextSceneName
-      value: 4th Level
-      objectReference: {fileID: 0}
-    - target: {fileID: 3841560555805241064, guid: 79605f7cbd7772d419cb9e8ed5e6c62a, type: 3}
-      propertyPath: m_Name
-      value: GameManager
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 79605f7cbd7772d419cb9e8ed5e6c62a, type: 3}
 --- !u!1 &1015913635
 GameObject:
   m_ObjectHideFlags: 0
@@ -7115,7 +7108,7 @@ GameObject:
   - component: {fileID: 1517777116}
   m_Layer: 0
   m_Name: Teleport L3
-  m_TagString: Untagged
+  m_TagString: Portal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9713,7 +9706,6 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 626297677}
-  - {fileID: 1011956739}
   - {fileID: 651503432}
   - {fileID: 672007390}
   - {fileID: 177768066}
@@ -9754,3 +9746,4 @@ SceneRoots:
   - {fileID: 1893640833}
   - {fileID: 69663693}
   - {fileID: 1397930970}
+  - {fileID: 1001034544}
