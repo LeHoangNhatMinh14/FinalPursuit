@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 592648891262470372}
   - component: {fileID: 1911879390944819898}
-  - component: {fileID: 2369559329450994489}
+  - component: {fileID: 1269867535394818400}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e0d833e1283ebb41a3d76ef7f84691a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  usePortal: 1
   portalObject: {fileID: 0}
   nextSceneName: 2th Level
   sceneAsset: {fileID: 102900000, guid: 7348d2c2eb74ce247a66e9f5c9c28628, type: 3}
@@ -63,7 +64,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8e68e949c251c61438c6c691e416ac28, type: 2}
   - {fileID: 11400000, guid: 01047c4c3d19ed449a0cf533b06eaf91, type: 2}
   - {fileID: 11400000, guid: 01047c4c3d19ed449a0cf533b06eaf91, type: 2}
---- !u!114 &2369559329450994489
+--- !u!114 &1269867535394818400
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -72,8 +73,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3841560555805241064}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e66f4d8a24d8c464bb261b3b8c1be5d0, type: 3}
+  m_Script: {fileID: 11500000, guid: fe54e81f9d3186b49b38626570b16452, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentWeaponPrefab: {fileID: 0}
-  unlockedWeapons: []
+  nextSceneName: 
+  usePortal: 1
+  initialEnemyCount: 10
+  levelName: Level 1
