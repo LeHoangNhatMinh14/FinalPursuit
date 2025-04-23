@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!54 &8242520
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -285,7 +285,7 @@ Transform:
   m_GameObject: {fileID: 8242519}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 898.78064, y: 2.964563, z: 1015.4827}
+  m_LocalPosition: {x: 925.9, y: 2.964563, z: 1008.19}
   m_LocalScale: {x: -0.017240832, y: 5.241001, z: -2.6853373}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1430,8 +1430,8 @@ Transform:
   m_GameObject: {fileID: 241992740}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.70710576, z: -0, w: 0.7071079}
-  m_LocalPosition: {x: -418.24625, y: 4.233157, z: -1.1967773}
-  m_LocalScale: {x: 65.79128, y: 0.24839216, z: 59.353107}
+  m_LocalPosition: {x: -418.24625, y: 4.233157, z: -0.69}
+  m_LocalScale: {x: 61.455635, y: 0.24839216, z: 59.353107}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1137039192}
@@ -6105,7 +6105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextSceneName: 2th Level
   usePortal: 1
-  initialEnemyCount: 3
+  initialEnemyCount: 30
   levelName: Level 1
 --- !u!114 &1305625356
 MonoBehaviour:
@@ -6119,10 +6119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e0d833e1283ebb41a3d76ef7f84691a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usePortal: 1
-  portalObject: {fileID: 8242519}
   nextSceneName: 3th Level
-  sceneAsset: {fileID: 102900000, guid: 9fcf16c53f92be8448b18259aefdb246, type: 3}
+  usePortal: 1
   perkPanel: {fileID: 633156600}
   cardContainer: {fileID: 633156599}
   cardPrefab: {fileID: 2851572854670861921, guid: 3f9e9a662677d414d917df08fef3bc07, type: 3}

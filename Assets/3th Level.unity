@@ -5095,10 +5095,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e0d833e1283ebb41a3d76ef7f84691a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usePortal: 1
-  portalObject: {fileID: 1517777110}
   nextSceneName: 4th Level
-  sceneAsset: {fileID: 102900000, guid: af8bcf1084a13ef47b8a7ddf141fdb0a, type: 3}
+  usePortal: 1
   perkPanel: {fileID: 626297679}
   cardContainer: {fileID: 626297678}
   cardPrefab: {fileID: 2851572854670861921, guid: 3f9e9a662677d414d917df08fef3bc07, type: 3}
@@ -7112,7 +7110,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!64 &1517777111
 MeshCollider:
   m_ObjectHideFlags: 0

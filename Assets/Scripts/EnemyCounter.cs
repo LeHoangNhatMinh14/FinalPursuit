@@ -1,296 +1,256 @@
-    using UnityEngine;
-    using UnityEngine.SceneManagement;
-    using System.Collections;
-    using System.Collections.Generic;
-    using UnityEngine.UI;
-    using System.Linq;
-    using StarterAssets;
-    using UnityEditor;
-    using TMPro;
-    using UnityEngine.EventSystems;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.UI;
+using System.Linq;
+using StarterAssets;
 
-    public class EnemyCounter : MonoBehaviour
+public class EnemyCounter : MonoBehaviour
+{
+    public static EnemyCounter Instance;
+
+    [Header("Scene Settings")]
+    [SerializeField] private string nextSceneName;
+    [SerializeField] private bool usePortal = true;
+    private GameObject portalObject;
+
+    [Header("Perk UI")]
+    [SerializeField] private GameObject perkPanel;
+    [SerializeField] private Transform cardContainer;
+    [SerializeField] private GameObject cardPrefab;
+
+    [Header("Perks")]
+    [SerializeField] private List<Perk> allPerks;
+
+    private int playerLives = 3;
+    private int enemyCount = 0;
+    private bool isChoosingPerk = false;
+    private bool perkSelected = false;
+    private WeaponHolder weaponHolder;
+
+    private void Awake()
     {
-        private int playerLives = 3;
-        [SerializeField] private bool usePortal = true;
-        [SerializeField] private GameObject portalObject;
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
 
-        [Header("Scene Settings")]
-        [SerializeField] private string nextSceneName;
-        [SerializeField] private SceneAsset sceneAsset;
+        weaponHolder = FindObjectOfType<WeaponHolder>();
+        perkPanel.SetActive(false);
+    }
 
-        [Header("Perk UI")]
-        [SerializeField] private GameObject perkPanel;
-        [SerializeField] private Transform cardContainer;
-        [SerializeField] private GameObject cardPrefab;
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
 
-        [Header("Perks")]
-        [SerializeField] private List<Perk> allPerks;
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
 
-        private int enemyCount = 0;
-        private bool isChoosingPerk = false;
-        private bool perkSelected = false;
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        RefreshSceneReferences();
+    }
 
-        private WeaponHolder weaponHolder;
-
-        private void Awake()
+    private void RefreshSceneReferences()
+    {
+        // 🔄 Get level settings
+        LevelSettings levelSettings = FindObjectOfType<LevelSettings>();
+        if (levelSettings != null)
         {
-            weaponHolder = FindObjectOfType<WeaponHolder>();
-            perkPanel.SetActive(false);
+            nextSceneName = levelSettings.nextSceneName;
+            usePortal = levelSettings.usePortal;
+        }
+
+        // 🔄 Get portal
+        portalObject = GameObject.FindGameObjectWithTag("Portal");
+        if (portalObject != null)
+            portalObject.SetActive(false);
+
+        // ✅ Only find UI if not already assigned (e.g. from Inspector)
+        if (perkPanel == null)
+            perkPanel = GameObject.Find("PerkPanel");
+        
+        if (perkPanel != null)
+        {
+            if (cardContainer == null)
+                cardContainer = perkPanel.transform.Find("CardContainer");
             
-            // Hide portal if not used
-            if (portalObject != null && !usePortal)
-            {
-                portalObject.SetActive(false);
-            }
+            perkPanel.SetActive(false); // Hide initially
         }
 
-        public void AddEnemy(GameObject enemy)
+        weaponHolder = FindObjectOfType<WeaponHolder>();
+    }
+
+    public void AddEnemy(GameObject enemy)
+    {
+        enemyCount++;
+        Debug.Log($"[EnemyCounter] Added {enemy.name} | Total Enemies: {enemyCount}");
+    }
+
+    public void RemoveEnemy(GameObject enemy)
+    {
+        enemyCount--;
+        Debug.Log($"[EnemyCounter] Removed {enemy.name} | Remaining Enemies: {enemyCount}");
+
+        if (enemyCount <= 0 && !isChoosingPerk)
         {
-            enemyCount++;
-            Debug.Log($"[Counter] Added {enemy.name} | Total Enemies: {enemyCount}");
+            StartCoroutine(HandleLevelEnd());
+        }
+    }
+
+    private IEnumerator HandleLevelEnd()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        if (usePortal && portalObject != null)
+        {
+            portalObject.SetActive(true);
+            Debug.Log("[EnemyCounter] All enemies defeated. Portal activated!");
+        }
+        else
+        {
+            Debug.Log("[EnemyCounter] No portal. Loading next scene directly...");
+            yield return new WaitForSeconds(1f);
+            LoadNextLevel();
+        }
+    }
+
+    public void ShowPerksAfterPortal()
+    {
+        StartCoroutine(StartPerkSelection());
+    }
+
+    private IEnumerator StartPerkSelection()
+    {
+        isChoosingPerk = true;
+
+        // Lock player
+        var player = FindObjectOfType<FirstPersonController>();
+        if (player != null)
+        {
+            player.GetComponent<CharacterController>().enabled = false;
+            player.enabled = false;
         }
 
-        public void RemoveEnemy(GameObject enemy)
-        {
-            enemyCount--;
-            Debug.Log($"[Counter] Removed {enemy.name} | Remaining Enemies: {enemyCount}");
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
 
-            if (enemyCount <= 0 && !isChoosingPerk)
-            {
-                StartCoroutine(HandleLevelEnd());
-            }
+        yield return StartCoroutine(ShowPerkChoices());
+        yield return new WaitUntil(() => perkSelected);
+
+        LoadNextLevel();
+    }
+
+    private IEnumerator ShowPerkChoices()
+    {
+        perkSelected = false;
+        perkPanel.SetActive(true);
+
+        // Clear old cards
+        foreach (Transform child in cardContainer)
+            Destroy(child.gameObject);
+
+        // Choose random perks
+        var perks = allPerks.OrderBy(x => Random.value).Take(3).ToList();
+
+        foreach (var perk in perks)
+        {
+            var card = Instantiate(cardPrefab, cardContainer);
+            SetupCard(card, perk);
+
+            var canvasGroup = card.GetComponent<CanvasGroup>();
+            if (canvasGroup != null)
+                StartCoroutine(AnimateCard(card));
         }
 
-        private IEnumerator HandleLevelEnd()
+        yield return null;
+    }
+
+    private void SetupCard(GameObject card, Perk perk)
+    {
+        var image = card.GetComponent<Image>();
+        if (image != null && perk.cardImage != null)
         {
-            if (usePortal)
-            {
-                // Portal level completion
-                if (portalObject != null)
-                {
-                    portalObject.SetActive(true);
-                    Debug.Log("[EnemyCounter] All enemies defeated. Portal is now active.");
-                }
-            }
-            else
-            {
-                // Direct level completion
-                Debug.Log("[EnemyCounter] All enemies defeated. Proceeding to next level.");
-                yield return new WaitForSeconds(1f); // Brief delay before transition
-                LoadNextLevel();
-            }
-            
-            yield break;
+            image.sprite = perk.cardImage;
+            image.preserveAspect = true;
         }
 
-        private void LoadNextLevel()
+        var button = card.GetComponent<Button>();
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(() => SelectPerk(perk));
+    }
+
+    private void SelectPerk(Perk perk)
+    {
+        Debug.Log($"[Perk] Selected: {perk.perkName}");
+        perk.ApplyEffect();
+
+        perkSelected = true;
+        perkPanel.SetActive(false);
+
+        // Unlock player controls
+        var player = FindObjectOfType<FirstPersonController>();
+        if (player != null)
         {
-            if (!string.IsNullOrEmpty(nextSceneName))
-            {
-                SceneManager.LoadScene(nextSceneName);
-            }
-            else
-            {
-                Debug.LogWarning("[EnemyCounter] No next scene name specified!");
-            }
+            player.GetComponent<CharacterController>().enabled = true;
+            player.enabled = true;
         }
 
-        private void OnEnable()
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    private void LoadNextLevel()
+    {
+        if (!string.IsNullOrEmpty(nextSceneName))
         {
-            SceneManager.sceneLoaded += OnSceneLoaded;
+            SceneManager.LoadScene(nextSceneName);
         }
-
-        private void OnDisable()
+        else
         {
-            SceneManager.sceneLoaded -= OnSceneLoaded;
+            Debug.LogWarning("[EnemyCounter] No next scene name assigned!");
         }
+    }
 
-        // This method is called every time a new scene is loaded
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private IEnumerator AnimateCard(GameObject card)
+    {
+        RectTransform rt = card.GetComponent<RectTransform>();
+        CanvasGroup cg = card.GetComponent<CanvasGroup>();
+
+        if (rt == null || cg == null) yield break;
+
+        float duration = 0.3f;
+        float elapsed = 0f;
+
+        Vector3 startScale = Vector3.zero;
+        Vector3 endScale = Vector3.one;
+
+        cg.alpha = 0;
+        rt.localScale = startScale;
+
+        while (elapsed < duration)
         {
-            RefreshSceneReferences();
-        }
-
-        private void RefreshSceneReferences()
-        {
-            // Find new portal reference in the scene
-            if (portalObject == null)
-            {
-                portalObject = GameObject.FindGameObjectWithTag("Portal");
-            }
-
-            // Find the LevelSettings object in the scene to get next level info
-            LevelSettings levelSettings = FindObjectOfType<LevelSettings>();
-            if (levelSettings != null)
-            {
-                nextSceneName = levelSettings.nextSceneName;
-                usePortal = levelSettings.usePortal;
-                
-                // Update portal active state based on new settings
-                if (portalObject != null)
-                {
-                    portalObject.SetActive(usePortal);
-                }
-            }
-            else
-            {
-                Debug.LogWarning("No LevelSettings found in the scene!");
-            }
-
-            // Refresh perk UI references if needed
-            perkPanel = GameObject.Find("PerkPanel"); // Or use a tag
-            cardContainer = perkPanel?.transform.Find("CardContainer");
-        }
-
-        private IEnumerator ShowPerkChoices()
-        {
-            perkSelected = false;
-            perkPanel.SetActive(true);
-
-            // Clear old cards if needed
-            foreach (Transform child in cardContainer)
-            {
-                Destroy(child.gameObject);
-            }
-
-            var perks = allPerks.OrderBy(x => Random.value).Take(3).ToList();
-
-            foreach (var perk in perks)
-            {
-                var card = Instantiate(cardPrefab, cardContainer);
-                SetupCard(card, perk);
-
-                var canvasGroup = card.GetComponent<CanvasGroup>();
-                if (canvasGroup != null)
-                    StartCoroutine(AnimateCard(card)); // Play the animation
-            }
-
+            float t = elapsed / duration;
+            rt.localScale = Vector3.Lerp(startScale, endScale, t);
+            cg.alpha = t;
+            elapsed += Time.unscaledDeltaTime;
             yield return null;
         }
 
-            public void ShowPerksAfterPortal()
-        {
-            StartCoroutine(StartPerkSelection());
-        }
-
-        private IEnumerator StartPerkSelection()
-        {
-            isChoosingPerk = true;
-
-            // Lock player controls
-            var player = FindObjectOfType<FirstPersonController>();
-            if (player != null)
-            {
-                player.GetComponent<CharacterController>().enabled = false;
-                player.enabled = false;
-            }
-
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-
-            yield return StartCoroutine(ShowPerkChoices());
-            yield return new WaitUntil(() => perkSelected);
-
-            // ✅ Now load the scene
-            if (!string.IsNullOrEmpty(nextSceneName))
-            {
-                SceneManager.LoadScene(nextSceneName);
-            }
-        }
-
-        private void SetupCard(GameObject card, Perk perk)
-        {
-            var image = card.GetComponent<Image>(); // assuming your card prefab root has the image
-            if (image != null && perk.cardImage != null)
-            {
-                image.sprite = perk.cardImage;
-                image.preserveAspect = true;
-            }
-
-            var button = card.GetComponent<Button>();
-            button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(() => SelectPerk(perk));
-        }
-
-
-        private void SelectPerk(Perk perk)
-        {
-            Debug.Log($"Selected perk: {perk.perkName}");
-
-            // Apply the perk effect
-            perk.ApplyEffect();
-
-            perkSelected = true;
-            perkPanel.SetActive(false);
-            
-            // Restore player controls
-            var player = FindObjectOfType<FirstPersonController>();
-            if (player != null)
-            {
-                player.GetComponent<CharacterController>().enabled = true;
-                player.enabled = true;
-            }
-            
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-
-            // For non-portal levels, we might want to skip the delay
-            float transitionDelay = usePortal ? 1.5f : 0.5f;
-            StartCoroutine(DelayedSceneTransition(transitionDelay));
-        }
-
-        private IEnumerator DelayedSceneTransition(float delay)
-        {
-            yield return new WaitForSeconds(delay);
-            SceneManager.LoadScene(nextSceneName);
-        }
-
-        private IEnumerator LoadNextSceneAfterDelay(float delay)
-        {
-            yield return new WaitForSeconds(delay);
-            SceneManager.LoadScene(nextSceneName);
-        }
-
-        private IEnumerator AnimateCard(GameObject card)
-        {
-            RectTransform rt = card.GetComponent<RectTransform>();
-            CanvasGroup cg = card.GetComponent<CanvasGroup>();
-
-            if (rt == null || cg == null)
-                yield break;
-
-            float duration = 0.3f;
-            float elapsed = 0f;
-
-            Vector3 startScale = Vector3.zero;
-            Vector3 endScale = Vector3.one;
-
-            cg.alpha = 0;
-            rt.localScale = startScale;
-
-            while (elapsed < duration)
-            {
-                float t = elapsed / duration;
-                rt.localScale = Vector3.Lerp(startScale, endScale, t);
-                cg.alpha = t;
-                elapsed += Time.unscaledDeltaTime; // In case game is paused
-                yield return null;
-            }
-
-            rt.localScale = endScale;
-            cg.alpha = 1;
-        }
-
-        public void OnPlayerRespawn(int remainingLives)
-        {
-            playerLives = remainingLives;
-            Debug.Log($"[EnemyCounter] Player respawned. Lives left: {playerLives}");
-        }
-
-        public void OnPlayerGameOver()
-        {
-            Debug.Log("[EnemyCounter] Player has lost the game!");
-            // Show Game Over UI, reload scene, etc.
-        }
+        rt.localScale = endScale;
+        cg.alpha = 1;
     }
+
+    public void OnPlayerRespawn(int remainingLives)
+    {
+        playerLives = remainingLives;
+        Debug.Log($"[EnemyCounter] Player respawned. Lives left: {playerLives}");
+    }
+
+    public void OnPlayerGameOver()
+    {
+        Debug.Log("[EnemyCounter] Player has lost all lives. Game Over!");
+    }
+}
