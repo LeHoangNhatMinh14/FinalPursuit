@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3841560555805241064
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 592648891262470372}
+  - component: {fileID: 1911879390944819898}
+  - component: {fileID: 2369559329450994489}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &592648891262470372
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3841560555805241064}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 922.6431, y: 3.9069986, z: 1024.727}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1911879390944819898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3841560555805241064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e0d833e1283ebb41a3d76ef7f84691a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  portalObject: {fileID: 0}
+  nextSceneName: 2th Level
+  sceneAsset: {fileID: 102900000, guid: 7348d2c2eb74ce247a66e9f5c9c28628, type: 3}
+  perkPanel: {fileID: 0}
+  cardContainer: {fileID: 0}
+  cardPrefab: {fileID: 2851572854670861921, guid: 3f9e9a662677d414d917df08fef3bc07, type: 3}
+  allPerks:
+  - {fileID: 11400000, guid: 8389fb39bc578e74c8757fa06a5c6839, type: 2}
+  - {fileID: 11400000, guid: ef4198ffb351a0b469940f1f0490b13e, type: 2}
+  - {fileID: 11400000, guid: 78d1cd38903bb294b8c0f4b6b3c39888, type: 2}
+  - {fileID: 11400000, guid: 834b71b243c7a174b936368e0a4a9bc0, type: 2}
+  - {fileID: 11400000, guid: 55194706e69751445a37c0c851150d6a, type: 2}
+  - {fileID: 11400000, guid: b8c1a81c88d8ea541b694c0c3ca93723, type: 2}
+  - {fileID: 11400000, guid: 0bdfa76cb11eccb4d8ebe1ef3126296f, type: 2}
+  - {fileID: 11400000, guid: dcca5b3302a5baf4b9721560eefd223c, type: 2}
+  - {fileID: 11400000, guid: 8e68e949c251c61438c6c691e416ac28, type: 2}
+  - {fileID: 11400000, guid: 01047c4c3d19ed449a0cf533b06eaf91, type: 2}
+  - {fileID: 11400000, guid: 01047c4c3d19ed449a0cf533b06eaf91, type: 2}
+--- !u!114 &2369559329450994489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3841560555805241064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e66f4d8a24d8c464bb261b3b8c1be5d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentWeaponPrefab: {fileID: 0}
+  unlockedWeapons: []

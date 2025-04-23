@@ -7,11 +7,19 @@ public class MachineGunPerk : Perk
 
     public override void ApplyEffect()
     {
-        var weaponHolder = GameObject.FindObjectOfType<WeaponHolder>();
-        if (weaponHolder != null)
+        if (WeaponHolder.Instance != null && weaponPrefab != null)
         {
-            Debug.Log("Chose the machine gun buff");
-            weaponHolder.EquipWeapon(weaponPrefab);
+            WeaponHolder.Instance.EquipWeapon(weaponPrefab);
+            
+            // Update persistent data
+            if (GamePersistentData.Instance != null)
+            {
+                GamePersistentData.Instance.currentWeaponPrefab = weaponPrefab;
+                if (!GamePersistentData.Instance.unlockedWeapons.Contains(weaponPrefab))
+                {
+                    GamePersistentData.Instance.unlockedWeapons.Add(weaponPrefab);
+                }
+            }
         }
     }
 }

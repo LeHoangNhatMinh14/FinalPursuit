@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a6ada5dec0eab34381c275b1f3fd642, type: 3}
   m_Name: Damage +5
   m_EditorClassIdentifier: 
-  cardImage: {fileID: 21300000, guid: 5eea22b816646c44eb7be9d8cb56fb01, type: 3}
+  cardImage: {fileID: 21300000, guid: 7641e0a1a9ed19940918b5f3f96e6624, type: 3}
   perkName: Damage +5
   description: 
   damageMultiplier: 5

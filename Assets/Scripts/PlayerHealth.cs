@@ -10,7 +10,7 @@ public class PlayerHealth : MonoBehaviour
     public float maxHealth = 100f;
     [SerializeField] private HealthBar healthBar; // Reference to your health bar
     
-    private float currentHealth;
+    public float currentHealth;
     private FirstPersonController fpsController;
 
     void Start()

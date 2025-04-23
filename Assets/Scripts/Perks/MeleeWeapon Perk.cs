@@ -11,64 +11,49 @@ public class MeleeWeaponPerk : Perk
 
     public override void ApplyEffect()
     {
-        // SAFEST way to find the player - works whether singleton or not
-        var player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<FirstPersonController>();
-        if (player == null)
+        base.ApplyEffect();
+        
+        // Weapon part
+        if (WeaponHolder.Instance != null && meleeWeaponPrefab != null)
         {
-            Debug.LogWarning("MeleeWeaponPerk: Player not found!");
-            return;
-        }
-
-        // Get components - using GetComponentInParent for broader search
-        var playerHealth = player.GetComponentInParent<PlayerHealth>();
-        var weaponHolder = player.GetComponentInChildren<WeaponHolder>(); // Changed to InChildren
-        var audioSource = player.GetComponent<AudioSource>();
-
-        // Apply melee weapon
-        if (meleeWeaponPrefab != null)
-        {
-            if (weaponHolder != null)
+            WeaponHolder.Instance.EquipWeapon(meleeWeaponPrefab);
+            
+            if (GamePersistentData.Instance != null)
             {
-                weaponHolder.EquipWeapon(meleeWeaponPrefab);
-                
-                if (equipSound != null && audioSource != null)
+                GamePersistentData.Instance.currentWeaponPrefab = meleeWeaponPrefab;
+                if (!GamePersistentData.Instance.unlockedWeapons.Contains(meleeWeaponPrefab))
                 {
-                    audioSource.PlayOneShot(equipSound);
+                    GamePersistentData.Instance.unlockedWeapons.Add(meleeWeaponPrefab);
                 }
             }
-            else
-            {
-                Debug.LogWarning("MeleeWeaponPerk: WeaponHolder component missing!");
-            }
         }
 
-        // Apply speed boost
-        player.MoveSpeed += speedBonus;
-
-        // Apply health changes
-        if (playerHealth != null)
+        // Stats part
+        var player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
         {
-            // Recommended approach - call public method
-           // playerHealth.ModifyHealthStats(healthPenalty);
+            var controller = player.GetComponent<FirstPersonController>();
+            var health = player.GetComponent<PlayerHealth>();
             
-            /* Alternative if ModifyHealthStats doesn't exist:
-            playerHealth.maxHealth += healthPenalty;
-            playerHealth.currentHealth = Mathf.Min(
-                playerHealth.currentHealth, 
-                playerHealth.maxHealth
-            );
-            if (playerHealth.healthBar != null)
+            if (controller != null)
             {
-                playerHealth.healthBar.UpdateHealth(
-                    playerHealth.currentHealth, 
-                    playerHealth.maxHealth
-                );
+                controller.MoveSpeed += speedBonus;
+                if (GamePersistentData.Instance != null)
+                {
+                    GamePersistentData.Instance.playerMoveSpeed = controller.MoveSpeed;
+                }
             }
-            */
-        }
-        else
-        {
-            Debug.LogWarning("MeleeWeaponPerk: PlayerHealth component missing!");
+            
+            if (health != null)
+            {
+                health.maxHealth += healthPenalty;
+                health.currentHealth = Mathf.Min(health.currentHealth, health.maxHealth);
+                
+                if (GamePersistentData.Instance != null)
+                {
+                    GamePersistentData.Instance.playerMaxHealth = health.maxHealth;
+                }
+            }
         }
     }
 }

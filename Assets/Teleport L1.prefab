@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1699883191935605782}
   - component: {fileID: 176579696905398616}
   - component: {fileID: 5431920730313987946}
+  - component: {fileID: 5247027738663206161}
   m_Layer: 0
   m_Name: Teleport L1
   m_TagString: Untagged
@@ -29,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6449828011193423234}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 898.78064, y: 2.964563, z: 1015.4827}
   m_LocalScale: {x: -0.017240832, y: 5.241001, z: -2.6853373}
   m_ConstrainProportionsScale: 0
@@ -104,12 +105,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 60.56845, y: 1, z: 0.9999999}
+  m_Center: {x: 16.194424, y: 0, z: 0}
 --- !u!64 &176579696905398616
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -144,4 +145,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb53df613edcbc2429813e7669317092, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: 
+--- !u!54 &5247027738663206161
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6449828011193423234}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
