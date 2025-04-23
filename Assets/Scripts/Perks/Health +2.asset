@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70cec8f8983e90f458ec81f4eacc983b, type: 3}
   m_Name: Health +2
   m_EditorClassIdentifier: 
-  cardImage: {fileID: 21300000, guid: 55d3fcdeff1348e4780a87c56cafccb9, type: 3}
+  cardImage: {fileID: 21300000, guid: 48c9b0750e1a08844a335c1bed8db261, type: 3}
   perkName: Health
   description: '
 

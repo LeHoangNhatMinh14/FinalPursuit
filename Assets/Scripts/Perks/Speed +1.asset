@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 643d8acba98b8364ab3f83829555c2bf, type: 3}
   m_Name: Speed +1
   m_EditorClassIdentifier: 
-  cardImage: {fileID: 21300000, guid: ee7aae14bc6df3d43afe61e8765d9c35, type: 3}
-  perkName: Speed +0.5
-  description: Move faster bruh
-  speedBonus: 0.5
+  cardImage: {fileID: 21300000, guid: 13626d0dc0a6ae54cafd664ab1b473dd, type: 3}
+  perkName: Speed +1
+  description: 
+  speedBonus: 1
