@@ -29,7 +29,7 @@ public class MeleeWeaponPerk : Perk
         {
             if (weaponHolder != null)
             {
-                weaponHolder.EquipOnlyWeapon(meleeWeaponPrefab);
+                weaponHolder.EquipWeapon(meleeWeaponPrefab);
                 
                 if (equipSound != null && audioSource != null)
                 {
