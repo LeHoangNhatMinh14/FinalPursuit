@@ -3267,23 +3267,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6078994401793290481, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.019958496
+      value: -195.05182
       objectReference: {fileID: 0}
     - target: {fileID: 6078994401793290481, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.4319997
+      value: 2.026194
       objectReference: {fileID: 0}
     - target: {fileID: 6078994401793290481, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.030944824
+      value: 33.28949
       objectReference: {fileID: 0}
     - target: {fileID: 6078994401793290481, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.72354877
+      value: -0.6902733
       objectReference: {fileID: 0}
     - target: {fileID: 6078994401793290481, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.6902733
+      value: -0.72354877
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9314,12 +9314,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextSceneName: 2th Level
   usePortal: 1
-  portalObject: {fileID: 340353063}
   perkPanel: {fileID: 1773273400}
   cardContainer: {fileID: 874809526}
   cardPrefab: {fileID: 2851572854670861921, guid: 3f9e9a662677d414d917df08fef3bc07, type: 3}
   allPerks:
-  - {fileID: 11400000, guid: 01047c4c3d19ed449a0cf533b06eaf91, type: 2}
+  - {fileID: 11400000, guid: b8c1a81c88d8ea541b694c0c3ca93723, type: 2}
+  - {fileID: 11400000, guid: 8389fb39bc578e74c8757fa06a5c6839, type: 2}
+  - {fileID: 11400000, guid: 834b71b243c7a174b936368e0a4a9bc0, type: 2}
+  - {fileID: 11400000, guid: bf5f33fb933f60149881c738098f13fd, type: 2}
+  - {fileID: 11400000, guid: 0f26087372b02c54dac7d14408309d7a, type: 2}
 --- !u!4 &1947698259
 Transform:
   m_ObjectHideFlags: 0

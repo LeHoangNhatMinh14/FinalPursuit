@@ -11065,15 +11065,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e0d833e1283ebb41a3d76ef7f84691a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usePortal: 1
-  portalObject: {fileID: 1581293675}
   nextSceneName: 5th Level
-  sceneAsset: {fileID: 102900000, guid: 7348d2c2eb74ce247a66e9f5c9c28628, type: 3}
+  usePortal: 1
   perkPanel: {fileID: 0}
   cardContainer: {fileID: 0}
   cardPrefab: {fileID: 2851572854670861921, guid: 3f9e9a662677d414d917df08fef3bc07, type: 3}
   allPerks:
   - {fileID: 11400000, guid: 01047c4c3d19ed449a0cf533b06eaf91, type: 2}
+  - {fileID: 11400000, guid: dcca5b3302a5baf4b9721560eefd223c, type: 2}
+  - {fileID: 11400000, guid: 55194706e69751445a37c0c851150d6a, type: 2}
+  - {fileID: 11400000, guid: 8e68e949c251c61438c6c691e416ac28, type: 2}
+  - {fileID: 11400000, guid: 0bdfa76cb11eccb4d8ebe1ef3126296f, type: 2}
+  - {fileID: 11400000, guid: 0b3aa3db155af1f44b00b7228d498f8e, type: 2}
+  - {fileID: 11400000, guid: e9b6251df619cb841bcd81df09301edd, type: 2}
+  - {fileID: 11400000, guid: 834b71b243c7a174b936368e0a4a9bc0, type: 2}
+  - {fileID: 11400000, guid: 0f26087372b02c54dac7d14408309d7a, type: 2}
 --- !u!4 &795310977
 Transform:
   m_ObjectHideFlags: 0

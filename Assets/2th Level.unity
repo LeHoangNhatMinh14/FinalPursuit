@@ -5903,7 +5903,7 @@ Transform:
   m_GameObject: {fileID: 1287874549}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.70710576, z: -0, w: 0.70710784}
-  m_LocalPosition: {x: 48.09828, y: 35.35172, z: -166.04}
+  m_LocalPosition: {x: 48.09828, y: 35.35172, z: -164.75}
   m_LocalScale: {x: 0.47663, y: 9.277028, z: 65.71763}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6125,7 +6125,10 @@ MonoBehaviour:
   cardContainer: {fileID: 633156599}
   cardPrefab: {fileID: 2851572854670861921, guid: 3f9e9a662677d414d917df08fef3bc07, type: 3}
   allPerks:
-  - {fileID: 11400000, guid: 01047c4c3d19ed449a0cf533b06eaf91, type: 2}
+  - {fileID: 11400000, guid: ef4198ffb351a0b469940f1f0490b13e, type: 2}
+  - {fileID: 11400000, guid: 0bdfa76cb11eccb4d8ebe1ef3126296f, type: 2}
+  - {fileID: 11400000, guid: 55194706e69751445a37c0c851150d6a, type: 2}
+  - {fileID: 11400000, guid: 0b3aa3db155af1f44b00b7228d498f8e, type: 2}
 --- !u!4 &1305625357
 Transform:
   m_ObjectHideFlags: 0

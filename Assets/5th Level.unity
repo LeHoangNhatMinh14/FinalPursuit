@@ -393,8 +393,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1.0326276, z: 1}
+  m_Center: {x: 4.5344846e-18, y: 0.016313042, z: -8.622051e-19}
 --- !u!23 &8373338
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -460,11 +460,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e1c93f11582cbf44a21c589103c206d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionRange: 2
-  climbHeightOffset: 1
-  climbKey: 101
-  player: {fileID: 970421979}
-  climbPrompt: {fileID: 0}
+  teleportHeight: 10
+  teleportKey: 101
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  teleportEffectPrefab: {fileID: 0}
+  teleportSound: {fileID: 0}
+  soundVolume: 0.5
 --- !u!1 &13863312
 GameObject:
   m_ObjectHideFlags: 0
@@ -7315,7 +7318,7 @@ Transform:
   m_GameObject: {fileID: 415353294}
   serializedVersion: 2
   m_LocalRotation: {x: 2.4691127e-10, y: 0.70703506, z: -4.1161607e-10, w: -0.70717853}
-  m_LocalPosition: {x: 45.4, y: 27.26, z: -23.91}
+  m_LocalPosition: {x: 45.4, y: 27.26, z: -22.64}
   m_LocalScale: {x: 2.017252, y: 0.54219395, z: 2.449647}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8810,8 +8813,8 @@ Transform:
   m_GameObject: {fileID: 464327860}
   serializedVersion: 2
   m_LocalRotation: {x: 2.4691127e-10, y: 0.70703506, z: -4.1161607e-10, w: -0.70717853}
-  m_LocalPosition: {x: 104.45, y: 30.33, z: -19.82}
-  m_LocalScale: {x: 2.017252, y: 0.54219395, z: 2.449647}
+  m_LocalPosition: {x: 103.14, y: 30.33, z: -19.82}
+  m_LocalScale: {x: 4.5581822, y: 0.54219395, z: 4.3951564}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 913391071}
@@ -10302,6 +10305,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100046, guid: 961cb067f6ba320489c4777a43c2fa7e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1621198004}
+    - targetCorrespondingSourceObject: {fileID: 100046, guid: 961cb067f6ba320489c4777a43c2fa7e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1621198005}
+    - targetCorrespondingSourceObject: {fileID: 100046, guid: 961cb067f6ba320489c4777a43c2fa7e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1621198009}
+    - targetCorrespondingSourceObject: {fileID: 100046, guid: 961cb067f6ba320489c4777a43c2fa7e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1621198008}
   m_SourcePrefab: {fileID: 100100000, guid: 961cb067f6ba320489c4777a43c2fa7e, type: 3}
 --- !u!4 &548331057 stripped
 Transform:
@@ -12109,25 +12121,37 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6078994401793290481, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
+    - target: {fileID: 5897202922552300466, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.020019531
       objectReference: {fileID: 0}
-    - target: {fileID: 6078994401793290481, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
+    - target: {fileID: 5897202922552300466, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
       propertyPath: m_LocalPosition.y
       value: 2.4319997
       objectReference: {fileID: 0}
-    - target: {fileID: 6078994401793290481, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
+    - target: {fileID: 5897202922552300466, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.030883789
       objectReference: {fileID: 0}
     - target: {fileID: 6078994401793290481, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -414.80054
+      objectReference: {fileID: 0}
+    - target: {fileID: 6078994401793290481, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.8042121
+      objectReference: {fileID: 0}
+    - target: {fileID: 6078994401793290481, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -59.498352
+      objectReference: {fileID: 0}
+    - target: {fileID: 6078994401793290481, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.72354877
+      value: 0.6902733
       objectReference: {fileID: 0}
     - target: {fileID: 6078994401793290481, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.6902733
+      value: 0.72354877
       objectReference: {fileID: 0}
     - target: {fileID: 7949390889217994907, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
       propertyPath: m_SizeDelta.x
@@ -14088,7 +14112,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400046, guid: 961cb067f6ba320489c4777a43c2fa7e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 22.27
+      value: 22.5
       objectReference: {fileID: 0}
     - target: {fileID: 400046, guid: 961cb067f6ba320489c4777a43c2fa7e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -14161,6 +14185,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100046, guid: 961cb067f6ba320489c4777a43c2fa7e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 744505741}
+    - targetCorrespondingSourceObject: {fileID: 100046, guid: 961cb067f6ba320489c4777a43c2fa7e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 744505742}
   m_SourcePrefab: {fileID: 100100000, guid: 961cb067f6ba320489c4777a43c2fa7e, type: 3}
 --- !u!4 &732077143 stripped
 Transform:
@@ -14384,11 +14411,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e1c93f11582cbf44a21c589103c206d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionRange: 2
-  climbHeightOffset: 1
-  climbKey: 101
-  player: {fileID: 970421979}
-  climbPrompt: {fileID: 0}
+  teleportHeight: 2
+  teleportKey: 101
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  teleportEffectPrefab: {fileID: 0}
+  teleportSound: {fileID: 0}
+  soundVolume: 0.5
+--- !u!65 &744505742
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 744505738}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &748300524
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15004,7 +15055,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400046, guid: 961cb067f6ba320489c4777a43c2fa7e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 24.42
+      value: 23.289995
       objectReference: {fileID: 0}
     - target: {fileID: 400046, guid: 961cb067f6ba320489c4777a43c2fa7e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -15057,6 +15108,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100046, guid: 961cb067f6ba320489c4777a43c2fa7e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1863593206}
+    - targetCorrespondingSourceObject: {fileID: 100046, guid: 961cb067f6ba320489c4777a43c2fa7e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1863593208}
   m_SourcePrefab: {fileID: 100100000, guid: 961cb067f6ba320489c4777a43c2fa7e, type: 3}
 --- !u!4 &805879259 stripped
 Transform:
@@ -16962,6 +17016,8 @@ Transform:
   - {fileID: 2111926552}
   - {fileID: 1863536378}
   - {fileID: 464327861}
+  - {fileID: 1820569827}
+  - {fileID: 1578629773}
   - {fileID: 173249482}
   - {fileID: 603333343}
   - {fileID: 1251462060}
@@ -17292,7 +17348,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400046, guid: 961cb067f6ba320489c4777a43c2fa7e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -67.06
+      value: -67.05
       objectReference: {fileID: 0}
     - target: {fileID: 400046, guid: 961cb067f6ba320489c4777a43c2fa7e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -17356,6 +17412,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100046, guid: 961cb067f6ba320489c4777a43c2fa7e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 976198965}
+    - targetCorrespondingSourceObject: {fileID: 100046, guid: 961cb067f6ba320489c4777a43c2fa7e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 976198967}
   m_SourcePrefab: {fileID: 100100000, guid: 961cb067f6ba320489c4777a43c2fa7e, type: 3}
 --- !u!4 &931707905 stripped
 Transform:
@@ -17728,11 +17787,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 944587496}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &970421979 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5126525269171649004, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
-  m_PrefabInstance: {fileID: 626297677}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &972872359
 GameObject:
   m_ObjectHideFlags: 0
@@ -17950,11 +18004,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e1c93f11582cbf44a21c589103c206d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionRange: 2
-  climbHeightOffset: 1
-  climbKey: 101
-  player: {fileID: 970421979}
-  climbPrompt: {fileID: 0}
+  teleportHeight: 2
+  teleportKey: 101
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  teleportEffectPrefab: {fileID: 0}
+  teleportSound: {fileID: 0}
+  soundVolume: 0.5
 --- !u!114 &976198966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17967,11 +18024,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e1c93f11582cbf44a21c589103c206d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionRange: 2
-  climbHeightOffset: 1
-  climbKey: 101
-  player: {fileID: 0}
-  climbPrompt: {fileID: 0}
+  teleportHeight: 2
+  teleportKey: 101
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  teleportEffectPrefab: {fileID: 0}
+  teleportSound: {fileID: 0}
+  soundVolume: 0.5
+--- !u!65 &976198967
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 976198962}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &982763637
 GameObject:
   m_ObjectHideFlags: 0
@@ -18755,8 +18836,8 @@ Transform:
   m_GameObject: {fileID: 1011001792}
   serializedVersion: 2
   m_LocalRotation: {x: 2.4691127e-10, y: 0.70703506, z: -4.1161607e-10, w: -0.70717853}
-  m_LocalPosition: {x: 2.87, y: 15.059999, z: -44.4}
-  m_LocalScale: {x: 2.017252, y: 0.54219395, z: 2.449647}
+  m_LocalPosition: {x: 2.87, y: 14.44, z: -46.48}
+  m_LocalScale: {x: 4.5735135, y: 0.54219395, z: 2.449647}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 913391071}
@@ -23210,6 +23291,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05e6442f623bf0c45b4dc86a9d07cd14, type: 3}
+--- !u!1 &1241612437 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100012, guid: 569f717455459754984cb3c3616e1fe7, type: 3}
+  m_PrefabInstance: {fileID: 1501207304}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1244797836
 GameObject:
   m_ObjectHideFlags: 0
@@ -27625,8 +27711,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1.0265399, z: 1}
+  m_Center: {x: 8.916836e-18, y: 0.01326923, z: 2.2152962e-19}
 --- !u!23 &1464888254
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -27707,11 +27793,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e1c93f11582cbf44a21c589103c206d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionRange: 2
-  climbHeightOffset: 1
-  climbKey: 101
-  player: {fileID: 970421979}
-  climbPrompt: {fileID: 0}
+  teleportHeight: 10
+  teleportKey: 101
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  teleportEffectPrefab: {fileID: 0}
+  teleportSound: {fileID: 0}
+  soundVolume: 0.5
 --- !u!1 &1470790176
 GameObject:
   m_ObjectHideFlags: 0
@@ -28337,13 +28426,37 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 100012, guid: 569f717455459754984cb3c3616e1fe7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1501207308}
   m_SourcePrefab: {fileID: 100100000, guid: 569f717455459754984cb3c3616e1fe7, type: 3}
 --- !u!4 &1501207305 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400012, guid: 569f717455459754984cb3c3616e1fe7, type: 3}
   m_PrefabInstance: {fileID: 1501207304}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &1501207308
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241612437}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.10000008, y: 2, z: 1.0000005}
+  m_Center: {x: -0.049999937, y: 1.0000019, z: -0.000000029802326}
 --- !u!1001 &1501239441
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30086,6 +30199,158 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05e6442f623bf0c45b4dc86a9d07cd14, type: 3}
+--- !u!1 &1578629772
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1578629773}
+  - component: {fileID: 1578629778}
+  - component: {fileID: 1578629777}
+  - component: {fileID: 1578629776}
+  - component: {fileID: 1578629775}
+  - component: {fileID: 1578629774}
+  m_Layer: 0
+  m_Name: Cube (119)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1578629773
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1578629772}
+  serializedVersion: 2
+  m_LocalRotation: {x: 2.4691127e-10, y: 0.70703506, z: -4.1161607e-10, w: -0.70717853}
+  m_LocalPosition: {x: 11.65, y: 9.63, z: -57.34}
+  m_LocalScale: {x: 1.2271196, y: 17.31146, z: 0.35256335}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 913391071}
+  m_LocalEulerAnglesHint: {x: 0, y: 270.012, z: 0}
+--- !u!114 &1578629774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1578629772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e1c93f11582cbf44a21c589103c206d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teleportHeight: 15
+  teleportKey: 101
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  teleportEffectPrefab: {fileID: 0}
+  teleportSound: {fileID: 0}
+  soundVolume: 0.5
+--- !u!64 &1578629775
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1578629772}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &1578629776
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1578629772}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.8087921, y: 1.0160005, z: 2.5053382}
+  m_Center: {x: 0.10655222, y: 0.008000272, z: -0.75267214}
+--- !u!23 &1578629777
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1578629772}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 419d1c3909cea20449811fda629fb769, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1578629778
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1578629772}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1001 &1579719263
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30232,8 +30497,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1.0254227, z: 1}
+  m_Center: {x: 6.5151644e-18, y: 0.012710858, z: 1.4194015e-19}
 --- !u!23 &1585266216
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -30299,11 +30564,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e1c93f11582cbf44a21c589103c206d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionRange: 2
-  climbHeightOffset: 1
-  climbKey: 101
-  player: {fileID: 970421979}
-  climbPrompt: {fileID: 0}
+  teleportHeight: 10
+  teleportKey: 101
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  teleportEffectPrefab: {fileID: 0}
+  teleportSound: {fileID: 0}
+  soundVolume: 0.5
 --- !u!1001 &1586510062
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30822,11 +31090,76 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e1c93f11582cbf44a21c589103c206d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionRange: 2
-  climbHeightOffset: 1
-  climbKey: 101
-  player: {fileID: 970421979}
-  climbPrompt: {fileID: 0}
+  teleportHeight: 2
+  teleportKey: 101
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  teleportEffectPrefab: {fileID: 0}
+  teleportSound: {fileID: 0}
+  soundVolume: 0.5
+--- !u!65 &1621198005
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1621198001}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 2.751934, z: 1}
+  m_Center: {x: -3.293427e-22, y: -0.875967, z: 1.3102939e-15}
+--- !u!114 &1621198008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1621198001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e1c93f11582cbf44a21c589103c206d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teleportHeight: 5
+  teleportKey: 101
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  teleportEffectPrefab: {fileID: 0}
+  teleportSound: {fileID: 0}
+  soundVolume: 0.5
+--- !u!65 &1621198009
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1621198001}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.89654195, y: 1.5901529, z: 1.0000002}
+  m_Center: {x: -0.04827082, y: 1.29496, z: 1.1898994e-15}
 --- !u!1 &1630274996
 GameObject:
   m_ObjectHideFlags: 0
@@ -33466,6 +33799,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100046, guid: 961cb067f6ba320489c4777a43c2fa7e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1749574459}
+    - targetCorrespondingSourceObject: {fileID: 100046, guid: 961cb067f6ba320489c4777a43c2fa7e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1749574460}
   m_SourcePrefab: {fileID: 100100000, guid: 961cb067f6ba320489c4777a43c2fa7e, type: 3}
 --- !u!4 &1749574456 stripped
 Transform:
@@ -33484,11 +33820,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e1c93f11582cbf44a21c589103c206d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionRange: 2
-  climbHeightOffset: 1
-  climbKey: 101
-  player: {fileID: 970421979}
-  climbPrompt: {fileID: 0}
+  teleportHeight: 2
+  teleportKey: 101
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  teleportEffectPrefab: {fileID: 0}
+  teleportSound: {fileID: 0}
+  soundVolume: 0.5
+--- !u!65 &1749574460
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1542311168}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1758365588
 GameObject:
   m_ObjectHideFlags: 0
@@ -34016,6 +34376,7 @@ GameObject:
   - component: {fileID: 1807378621}
   - component: {fileID: 1807378620}
   - component: {fileID: 1807378619}
+  - component: {fileID: 1807378623}
   m_Layer: 0
   m_Name: Cube (106)
   m_TagString: Untagged
@@ -34032,8 +34393,8 @@ Transform:
   m_GameObject: {fileID: 1807378617}
   serializedVersion: 2
   m_LocalRotation: {x: 2.4691127e-10, y: 0.70703506, z: -4.1161607e-10, w: -0.70717853}
-  m_LocalPosition: {x: 45.4, y: 31.01, z: -18.71}
-  m_LocalScale: {x: 2.017252, y: 0.54219395, z: 2.449647}
+  m_LocalPosition: {x: 45.4, y: 29.3, z: -19.84}
+  m_LocalScale: {x: 2.017252, y: 4.669049, z: 2.449647}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 913391071}
@@ -34079,8 +34440,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.3891493, y: 1.0319611, z: 1}
+  m_Center: {x: -0.19457473, y: 0.015980491, z: -2.742851e-13}
 --- !u!23 &1807378621
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -34134,6 +34495,26 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1807378617}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1807378623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1807378617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e1c93f11582cbf44a21c589103c206d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teleportHeight: 5
+  teleportKey: 101
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  teleportEffectPrefab: {fileID: 0}
+  teleportSound: {fileID: 0}
+  soundVolume: 0.5
 --- !u!1 &1808129753
 GameObject:
   m_ObjectHideFlags: 0
@@ -34334,6 +34715,158 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 383e536483965054caae596a353320aa, type: 3}
+--- !u!1 &1820569826
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1820569827}
+  - component: {fileID: 1820569832}
+  - component: {fileID: 1820569831}
+  - component: {fileID: 1820569830}
+  - component: {fileID: 1820569829}
+  - component: {fileID: 1820569828}
+  m_Layer: 0
+  m_Name: Cube (118)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1820569827
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1820569826}
+  serializedVersion: 2
+  m_LocalRotation: {x: 2.4691127e-10, y: 0.70703506, z: -4.1161607e-10, w: -0.70717853}
+  m_LocalPosition: {x: 101.17, y: 38.92, z: -21.26}
+  m_LocalScale: {x: 1.2271196, y: 17.31146, z: 0.35256335}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 913391071}
+  m_LocalEulerAnglesHint: {x: 0, y: 270.012, z: 0}
+--- !u!114 &1820569828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1820569826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e1c93f11582cbf44a21c589103c206d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teleportHeight: 15
+  teleportKey: 101
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  teleportEffectPrefab: {fileID: 0}
+  teleportSound: {fileID: 0}
+  soundVolume: 0.5
+--- !u!64 &1820569829
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1820569826}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &1820569830
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1820569826}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.8087921, y: 1.0160005, z: 2.5053382}
+  m_Center: {x: 0.10655222, y: 0.008000272, z: -0.75267214}
+--- !u!23 &1820569831
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1820569826}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 419d1c3909cea20449811fda629fb769, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1820569832
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1820569826}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1001 &1822673211
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35963,11 +36496,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e1c93f11582cbf44a21c589103c206d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionRange: 2
-  climbHeightOffset: 1
-  climbKey: 101
-  player: {fileID: 970421979}
-  climbPrompt: {fileID: 0}
+  teleportHeight: 2
+  teleportKey: 101
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  teleportEffectPrefab: {fileID: 0}
+  teleportSound: {fileID: 0}
+  soundVolume: 0.5
 --- !u!114 &1863593207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35980,11 +36516,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e1c93f11582cbf44a21c589103c206d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionRange: 2
-  climbHeightOffset: 1
-  climbKey: 101
-  player: {fileID: 0}
-  climbPrompt: {fileID: 0}
+  teleportHeight: 2
+  teleportKey: 101
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  teleportEffectPrefab: {fileID: 0}
+  teleportSound: {fileID: 0}
+  soundVolume: 0.5
+--- !u!65 &1863593208
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863593203}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1865602020
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37958,6 +38518,7 @@ GameObject:
   - component: {fileID: 1997688630}
   - component: {fileID: 1997688629}
   - component: {fileID: 1997688628}
+  - component: {fileID: 1997688632}
   m_Layer: 0
   m_Name: Cube (87)
   m_TagString: Untagged
@@ -37974,8 +38535,8 @@ Transform:
   m_GameObject: {fileID: 1997688626}
   serializedVersion: 2
   m_LocalRotation: {x: 2.4691127e-10, y: 0.70703506, z: -4.1161607e-10, w: -0.70717853}
-  m_LocalPosition: {x: 9.9, y: 27.26, z: -82.774}
-  m_LocalScale: {x: 2.017252, y: 0.54219395, z: 2.449647}
+  m_LocalPosition: {x: 9.9, y: 25.67, z: -82.774}
+  m_LocalScale: {x: 2.017252, y: 4.033274, z: 2.449647}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 913391071}
@@ -38021,8 +38582,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1.0296826, z: 1}
+  m_Center: {x: -1.7106005e-19, y: 0.01484133, z: 5.2405175e-19}
 --- !u!23 &1997688630
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -38076,6 +38637,26 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1997688626}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1997688632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1997688626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e1c93f11582cbf44a21c589103c206d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teleportHeight: 5
+  teleportKey: 101
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  teleportEffectPrefab: {fileID: 0}
+  teleportSound: {fileID: 0}
+  soundVolume: 0.5
 --- !u!1001 &2002669759
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40943,6 +41524,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100012, guid: 569f717455459754984cb3c3616e1fe7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2117137137}
+    - targetCorrespondingSourceObject: {fileID: 100012, guid: 569f717455459754984cb3c3616e1fe7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2117137138}
   m_SourcePrefab: {fileID: 100100000, guid: 569f717455459754984cb3c3616e1fe7, type: 3}
 --- !u!4 &2117137134 stripped
 Transform:
@@ -40961,11 +41545,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e1c93f11582cbf44a21c589103c206d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionRange: 2
-  climbHeightOffset: 1
-  climbKey: 101
-  player: {fileID: 970421979}
-  climbPrompt: {fileID: 0}
+  teleportHeight: 2
+  teleportKey: 101
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  teleportEffectPrefab: {fileID: 0}
+  teleportSound: {fileID: 0}
+  soundVolume: 0.5
+--- !u!65 &2117137138
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 274366942}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &2118473074
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41029,6 +41637,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100012, guid: 569f717455459754984cb3c3616e1fe7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2118473078}
+    - targetCorrespondingSourceObject: {fileID: 100012, guid: 569f717455459754984cb3c3616e1fe7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2118473079}
+    - targetCorrespondingSourceObject: {fileID: 100012, guid: 569f717455459754984cb3c3616e1fe7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2118473082}
   m_SourcePrefab: {fileID: 100100000, guid: 569f717455459754984cb3c3616e1fe7, type: 3}
 --- !u!4 &2118473075 stripped
 Transform:
@@ -41047,11 +41661,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e1c93f11582cbf44a21c589103c206d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionRange: 2
-  climbHeightOffset: 1
-  climbKey: 101
-  player: {fileID: 970421979}
-  climbPrompt: {fileID: 0}
+  teleportHeight: 2
+  teleportKey: 101
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  teleportEffectPrefab: {fileID: 0}
+  teleportSound: {fileID: 0}
+  soundVolume: 0.5
+--- !u!65 &2118473079
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 306064800}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 2.514098, z: 1}
+  m_Center: {x: 1.8934552e-22, y: 0.75704896, z: -1.6778768e-15}
+--- !u!114 &2118473082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 306064800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e1c93f11582cbf44a21c589103c206d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teleportHeight: 5
+  teleportKey: 101
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  teleportEffectPrefab: {fileID: 0}
+  teleportSound: {fileID: 0}
+  soundVolume: 0.5
 --- !u!1001 &2131721595
 PrefabInstance:
   m_ObjectHideFlags: 0

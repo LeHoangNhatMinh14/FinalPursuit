@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c1e1faef989a394cb87cf2530642d1c, type: 3}
+  m_Name: CShotgun Perk
+  m_EditorClassIdentifier: 
+  cardImage: {fileID: 21300000, guid: f5486b1fdb3ca18479cf9a8d80adef06, type: 3}
+  perkName: Shotgun
+  description: 
+  shotgunPrefab: {fileID: 3206066849736246504, guid: b199d0d189103304c926247ae6b09873, type: 3}
+  damageMultiplier: 1.2
+  extraPellets: 2
+  spreadReduction: -0.1

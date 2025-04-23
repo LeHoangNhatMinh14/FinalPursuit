@@ -1,55 +1,122 @@
 using UnityEngine;
 
-public class ClimbablePillar : MonoBehaviour
+[RequireComponent(typeof(BoxCollider))] // Ensures collider exists
+public class TeleportPlatform : MonoBehaviour
 {
-    [Header("Climbing Settings")]
-    public float interactionRange = 2f; // How close player needs to be
-    public float climbHeightOffset = 1f; // How much above the pillar to teleport
-    public KeyCode climbKey = KeyCode.E; // Key to press for climbing
-    
-    [Header("References")]
-    public GameObject player; // Drag your player here
-    public GameObject climbPrompt; // Optional UI prompt (set active/inactive)
-    
-    private bool playerInRange = false;
+    [Header("Teleport Settings")]
+    public float teleportHeight = 2f;
+    public KeyCode teleportKey = KeyCode.E;
+    public LayerMask playerLayer; // Set this to your player's layer
+
+    [Header("Effects")]
+    public GameObject teleportEffectPrefab;
+    public AudioClip teleportSound;
+    public float soundVolume = 0.5f;
+
+    private GameObject player;
+    private bool canTeleport;
+    private BoxCollider triggerCollider;
+
+    void Start()
+    {
+        // Set up trigger collider
+        triggerCollider = GetComponent<BoxCollider>();
+        triggerCollider.isTrigger = true;
+        
+        // Make sure we have a player tag defined
+        if (GameObject.FindGameObjectWithTag("Player") == null)
+        {
+            Debug.LogError("No GameObject with 'Player' tag found in scene!");
+        }
+    }
 
     void Update()
     {
-        // Check if player is in range
-        float distance = Vector3.Distance(transform.position, player.transform.position);
-        playerInRange = distance <= interactionRange;
-        
-        // Show/hide climb prompt if available
-        if (climbPrompt != null)
+        if (canTeleport && Input.GetKeyDown(teleportKey))
         {
-            climbPrompt.SetActive(playerInRange);
-        }
-        
-        // Check for climb input
-        if (playerInRange && Input.GetKeyDown(climbKey))
-        {
-            ClimbPillar();
+            TeleportPlayer();
         }
     }
-    
-    void ClimbPillar()
+
+    void OnTriggerEnter(Collider other)
     {
-        // Calculate top position of the pillar
-        Vector3 pillarTop = transform.position + Vector3.up * (GetComponent<Collider>().bounds.extents.y + climbHeightOffset);
-        
-        // Teleport player to the top
-        player.transform.position = pillarTop;
-        
-        // Optional: Play sound effect
-        // AudioManager.Instance.Play("ClimbSound");
-        
-        Debug.Log("Player climbed the pillar!");
+        if (other.CompareTag("Player"))
+        {
+            player = other.gameObject;
+            canTeleport = true;
+            Debug.Log("Player in range - Press E to teleport", this);
+        }
     }
-    
-    // Visualize interaction range in editor
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            canTeleport = false;
+            player = null;
+        }
+    }
+
+    void TeleportPlayer()
+    {
+        if (player == null) return;
+
+        // Calculate teleport position
+        Vector3 teleportPos = transform.position;
+        teleportPos.y += teleportHeight;
+
+        // Check if destination is clear
+        if (!IsPositionClear(teleportPos))
+        {
+            Debug.Log("Teleport blocked - space above is occupied", this);
+            return;
+        }
+
+        // Play effects
+        PlayTeleportEffects(player.transform.position, teleportPos);
+
+        // Move player
+        CharacterController cc = player.GetComponent<CharacterController>();
+        if (cc != null)
+        {
+            cc.enabled = false; // Must disable CC before teleporting
+            player.transform.position = teleportPos;
+            cc.enabled = true;
+        }
+        else
+        {
+            player.transform.position = teleportPos;
+        }
+
+        Debug.Log("Player teleported successfully!", this);
+    }
+
+    bool IsPositionClear(Vector3 position)
+    {
+        // Check if there's enough space for the player
+        return !Physics.CheckSphere(position, 0.5f, ~playerLayer);
+    }
+
+    void PlayTeleportEffects(Vector3 startPos, Vector3 endPos)
+    {
+        if (teleportEffectPrefab != null)
+        {
+            Instantiate(teleportEffectPrefab, startPos, Quaternion.identity);
+            Instantiate(teleportEffectPrefab, endPos, Quaternion.identity);
+        }
+
+        if (teleportSound != null)
+        {
+            AudioSource.PlayClipAtPoint(teleportSound, transform.position, soundVolume);
+        }
+    }
+
     void OnDrawGizmosSelected()
     {
+        // Draw teleport destination marker
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, interactionRange);
+        Vector3 destPos = transform.position + Vector3.up * teleportHeight;
+        Gizmos.DrawWireSphere(destPos, 0.5f);
+        Gizmos.DrawLine(transform.position, destPos);
     }
 }
