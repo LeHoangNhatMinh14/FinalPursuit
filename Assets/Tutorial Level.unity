@@ -3261,6 +3261,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7577748817537248964, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
+      propertyPath: weaponName
+      value: Pistol
+      objectReference: {fileID: 0}
+    - target: {fileID: 7577748817537248964, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
+      propertyPath: baseBodyDamage
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7577748817537248964, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
+      propertyPath: baseHeadDamage
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 7949390889217994907, guid: 79b46fd97f9dfc8458eefd75abacb3c3, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -6851,6 +6863,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dcca5b3302a5baf4b9721560eefd223c, type: 2}
   - {fileID: 11400000, guid: 8389fb39bc578e74c8757fa06a5c6839, type: 2}
   - {fileID: 11400000, guid: ef4198ffb351a0b469940f1f0490b13e, type: 2}
+  - {fileID: 11400000, guid: 01047c4c3d19ed449a0cf533b06eaf91, type: 2}
 --- !u!4 &1377727379
 Transform:
   m_ObjectHideFlags: 0
@@ -10051,17 +10064,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5227949653344358662, guid: 05e6442f623bf0c45b4dc86a9d07cd14, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5227949653344358662, guid: 05e6442f623bf0c45b4dc86a9d07cd14, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5227949653344358662, guid: 05e6442f623bf0c45b4dc86a9d07cd14, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
+    - target: {fileID: 3462963863895500485, guid: 05e6442f623bf0c45b4dc86a9d07cd14, type: 3}
+      propertyPath: m_Name
+      value: Enemy Variant
       objectReference: {fileID: 0}
     - target: {fileID: 3781475937744884050, guid: 05e6442f623bf0c45b4dc86a9d07cd14, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10103,9 +10108,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3462963863895500485, guid: 05e6442f623bf0c45b4dc86a9d07cd14, type: 3}
-      propertyPath: m_Name
-      value: Enemy Variant
+    - target: {fileID: 5227949653344358662, guid: 05e6442f623bf0c45b4dc86a9d07cd14, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5227949653344358662, guid: 05e6442f623bf0c45b4dc86a9d07cd14, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5227949653344358662, guid: 05e6442f623bf0c45b4dc86a9d07cd14, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
