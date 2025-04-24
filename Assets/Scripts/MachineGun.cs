@@ -36,20 +36,26 @@ public class MachineGun : WeaponBase
 
     void Shoot()
     {
-        muzzleFlash?.Play();
-        gunAudio?.PlayOneShot(shootSound);
+        if (muzzleFlash != null)
+        {
+            muzzleFlash.Play();
+        }
+
+        if (gunAudio != null && shootSound != null)
+        {
+            gunAudio.PlayOneShot(shootSound);
+        }
 
         for (int i = 0; i < bulletsPerShot; i++)
         {
             Vector3 shotDirection = GetShotDirection();
-            if (Physics.Raycast(playerCamera.transform.position, shotDirection, 
-                              out RaycastHit hit, maxDistance))
+            if (Physics.Raycast(playerCamera.transform.position, shotDirection,
+                                out RaycastHit hit, maxDistance))
             {
                 ProcessHit(hit);
             }
         }
     }
-
     Vector3 GetShotDirection()
     {
         Vector3 direction = playerCamera.transform.forward;
@@ -67,7 +73,11 @@ public class MachineGun : WeaponBase
         {
             enemy.TakeDamage(damage, isHeadshot);
         }
-        
-        Instantiate(bulletImpactPrefab, hit.point, Quaternion.LookRotation(hit.normal));
+
+        // Only spawn impact if prefab is assigned
+        if (bulletImpactPrefab != null)
+        {
+            Instantiate(bulletImpactPrefab, hit.point, Quaternion.LookRotation(hit.normal));
+        }
     }
 }
