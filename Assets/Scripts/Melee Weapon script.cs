@@ -100,11 +100,29 @@ public class Katana : MonoBehaviour
     // Visualize attack range in editor
     void OnDrawGizmosSelected()
     {
-        if (playerCamera == null) return;
+    #if UNITY_EDITOR
+        // Use current camera for editor preview (in case not in play mode)
+        Camera cam = Camera.main;
+        if (!Application.isPlaying && cam == null && UnityEditor.SceneView.lastActiveSceneView != null)
+        {
+            cam = UnityEditor.SceneView.lastActiveSceneView.camera;
+        }
+
+        if (cam == null) return;
+
+        Vector3 center = cam.transform.position + cam.transform.forward * (attackRange / 2f);
+        Quaternion rotation = cam.transform.rotation;
+
+        Gizmos.color = new Color(1f, 0f, 0f, 0.3f); // semi-transparent red
+        Matrix4x4 prevMatrix = Gizmos.matrix;
+        Gizmos.matrix = Matrix4x4.TRS(center, rotation, Vector3.one);
+        Gizmos.DrawCube(Vector3.zero, new Vector3(attackWidth * 2f, attackWidth * 2f, attackRange));
         
-        Vector3 center = playerCamera.transform.position + playerCamera.transform.forward * (attackRange / 2f);
         Gizmos.color = Color.red;
-        Gizmos.matrix = Matrix4x4.TRS(center, playerCamera.transform.rotation, Vector3.one);
-        Gizmos.DrawWireCube(Vector3.zero, new Vector3(attackWidth * 2, attackWidth * 2, attackRange));
+        Gizmos.DrawWireCube(Vector3.zero, new Vector3(attackWidth * 2f, attackWidth * 2f, attackRange));
+
+        Gizmos.matrix = prevMatrix;
+    #endif
     }
+
 }

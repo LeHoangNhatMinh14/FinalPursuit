@@ -103,7 +103,7 @@ MonoBehaviour:
   headDamageMultiplier: 2
   lightAttackCooldown: 0.5
   heavyAttackCooldown: 1.2
-  attackRange: 2
+  attackRange: 4
   attackWidth: 0.5
   swordAudio: {fileID: 0}
   swingSound: {fileID: 0}
