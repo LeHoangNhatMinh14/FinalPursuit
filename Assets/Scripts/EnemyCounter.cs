@@ -79,6 +79,9 @@ public class EnemyCounter : MonoBehaviour
             
             perkPanel.SetActive(false); // Hide initially
         }
+        
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 
         weaponHolder = FindObjectOfType<WeaponHolder>();
     }

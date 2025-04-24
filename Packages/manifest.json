@@ -26,6 +26,7 @@
     "com.unity.timeline": "1.8.8",
     "com.unity.ugui": "2.0.0",
     "com.unity.visualscripting": "1.9.6",
+    "com.wispbart.butlerwindow": "https://github.com/WispBart/ButlerWindow.git",
     "com.unity.modules.accessibility": "1.0.0",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",

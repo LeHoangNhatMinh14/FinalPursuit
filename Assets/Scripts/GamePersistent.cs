@@ -51,12 +51,14 @@ public class GamePersistentData : MonoBehaviour
     }
 
     public void LoadPlayerStats(FirstPersonController player, PlayerHealth health)
+{
+    if (player != null)
+        player.MoveSpeed = playerMoveSpeed;
+
+    if (health != null)
     {
-        if (player != null) player.MoveSpeed = playerMoveSpeed;
-        if (health != null)
-        {
-            health.maxHealth = playerMaxHealth;
-            health.currentHealth = Mathf.Min(health.currentHealth, playerMaxHealth);
-        }
+        health.maxHealth = playerMaxHealth;
+        health.currentHealth = playerMaxHealth; // Always heal to full at start
     }
+}
 }
