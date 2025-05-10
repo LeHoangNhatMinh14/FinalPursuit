@@ -1,35 +1,55 @@
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class Weapon : WeaponBase
 {
-    [Header("Damage")]
-    public float bodyDamage = 30f;
-    public float headDamage = 100f;
+    [Header("Weapon Settings")]
+    public float fireRate = 0.5f;
+    private float nextFireTime;
+
+    [Header("Sound")]
+    public AudioSource audioSource;         // AudioSource to play the sound
+    public AudioClip shootSound;            // The shoot sound clip
+
+    private void Start()
+    {
+        weaponName = "Pistol";
+        baseBodyDamage = 30f;
+        baseHeadDamage = 100f;
+
+        // Optional safety fallback
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
+    }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && Time.time >= nextFireTime)
         {
-            RaycastHit hit;
-            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit))
+            nextFireTime = Time.time + fireRate;
+
+            if (shootSound != null && audioSource != null)
             {
-                bool isHeadshot = hit.collider.CompareTag("Head");
-                float damage = isHeadshot ? headDamage : bodyDamage;
-                
-                Enemy enemy = hit.transform.GetComponentInParent<Enemy>();
-                if (enemy != null)
-                {
-                    enemy.TakeDamage(damage, isHeadshot);
-                }
-                else
-                {
-                    Debug.Log("Hit " + hit.collider.name + " (not an enemy)");
-                }
+                audioSource.PlayOneShot(shootSound);
+            }
+
+            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit))
+            {
+                ProcessHit(hit);
             }
         }
     }
 
-    // Visual debug
+    public override void ProcessHit(RaycastHit hit, bool isHeavyAttack = false)
+    {
+        bool isHeadshot = hit.collider.CompareTag("Head");
+        float damage = isHeadshot ? CurrentHeadDamage : CurrentBodyDamage;
+
+        if (hit.collider.GetComponentInParent<Enemy>() is Enemy enemy)
+        {
+            enemy.TakeDamage(damage, isHeadshot);
+        }
+    }
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;

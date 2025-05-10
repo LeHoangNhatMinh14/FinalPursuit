@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 869eb1f5531f3a543a6b550fbbc577d6, type: 3}
+  m_Name: Health+Speed Perk
+  m_EditorClassIdentifier: 
+  cardImage: {fileID: 21300000, guid: 68134fbe509029b49a9a74757e440445, type: 3}
+  perkName: Healt +1 Speed +1
+  description: 
+  healthBonus: 1
+  speedBonus: 1

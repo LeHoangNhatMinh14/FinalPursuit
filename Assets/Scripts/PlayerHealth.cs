@@ -3,11 +3,14 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
+    [Header("Lives")]
+    public int maxLives = 3;
+    public int currentLives = 3;
     [Header("Health Settings")]
     public float maxHealth = 100f;
     [SerializeField] private HealthBar healthBar; // Reference to your health bar
     
-    private float currentHealth;
+    public float currentHealth;
     private FirstPersonController fpsController;
 
     void Start()
@@ -38,15 +41,30 @@ public class PlayerHealth : MonoBehaviour
 
     private void Die()
     {
-        // Disable controls
-        if (fpsController != null)
-            fpsController.enabled = false;
-            
-        // Update health bar to empty
-        if (healthBar != null)
-            healthBar.UpdateHealth(0, maxHealth);
-        
-        Debug.Log("Player died!");
-        // Add any additional death logic here
+        currentLives--;
+        Debug.Log($"Player lost a life! Remaining lives: {currentLives}");
+
+        if (currentLives > 0)
+        {
+            currentHealth = maxHealth;
+            fpsController.enabled = true;
+
+            if (healthBar != null)
+                healthBar.UpdateHealth(currentHealth, maxHealth);
+
+            // ✅ Notify EnemyCounter
+            var counter = FindObjectOfType<EnemyCounter>();
+            counter?.OnPlayerRespawn(currentLives);
+        }
+        else
+        {
+            if (fpsController != null)
+                fpsController.enabled = false;
+
+            Debug.Log("Out of lives. Game over!");
+
+            var counter = FindObjectOfType<EnemyCounter>();
+            counter?.OnPlayerGameOver();
+        }
     }
 }

@@ -8,6 +8,9 @@ TagManager:
   - Body
   - Enemy
   - CinemachineTarget
+  - Spawnpoint
+  - Wall
+  - Portal
   layers:
   - Default
   - TransparentFX

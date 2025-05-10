@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ae299471e7423049a10a6afd04194b0, type: 3}
+  m_Name: Melee Weapon Perk
+  m_EditorClassIdentifier: 
+  cardImage: {fileID: 21300000, guid: 87434228129a11d4e8b22d694e6874b0, type: 3}
+  perkName: Melee Weapon
+  description: 
+  meleeWeaponPrefab: {fileID: 3206066849736246504, guid: c88f1a4f64c8bc4439cf5daaf7906095, type: 3}
+  speedBonus: 5
+  healthPenalty: -2
+  equipSound: {fileID: 0}
